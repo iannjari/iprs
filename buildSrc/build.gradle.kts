@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    `kotlin-dsl`
 }
 
 group = "dev.njari"
@@ -7,6 +7,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
