@@ -1,2 +1,3 @@
-rootProject.name = "buildSrc"
+rootProject.name = "iprs"
+
 include("iprs_svc")
