@@ -1,0 +1,11 @@
+{
+	"configurations": [
+		{
+			"type": "spring-boot",
+			"name": "Iprs Svc",
+			"mainClass": "$PROJECT_DIR$\iprs_svc\src\main\java\dev\njari\IprsApp.java",
+			"module": "$PROJECT_DIR$\iprs_svc\src\main\java\dev\njari",
+		},
+		
+	]
+}
