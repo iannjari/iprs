@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  temporal:
+    image: temporalio/server
+    container_name: temporal
+    ports:
+      - "7233:7233"
+      - "8233:8233"
+    networks:
+      - local_net
+    stdin_open: true
+    tty: true
+
+networks:
+  local_net:
+    attachable: true
