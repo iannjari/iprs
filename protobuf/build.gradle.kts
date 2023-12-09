@@ -1,5 +1,7 @@
+import org.gradle.kotlin.dsl.`java-library`
+
 plugins {
-	java
+	`java-library`
 	id("com.google.protobuf") version("0.9.4")
 }
 
@@ -9,7 +11,7 @@ repositories {
 }
 
 dependencies {
-	implementation("com.google.protobuf:protobuf-java:3.21.6")
+	api("com.google.protobuf:protobuf-java:3.21.6")
 	// https://mvnrepository.com/artifact/com.google.protobuf/protobuf-gradle-plugin
 	runtimeOnly("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
 	implementation("io.grpc:grpc-all:1.49.1")
@@ -35,6 +37,8 @@ protobuf {
 		}
 	}
 }
+
+
 
 tasks.getByName("compileJava") {
 	dependsOn("generateProto")
