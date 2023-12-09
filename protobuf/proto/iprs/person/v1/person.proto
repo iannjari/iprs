@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package iprs.person.v1;
+
+option java_multiple_files = true;
+
+import "google/protobuf/timestamp.proto";
+
+message Person {
+  string id =1;
+  string first_name = 2;
+  string last_name =3;
+  string other_names =4;
+  IprsDetails iprs_details =5;
+  google.protobuf.Timestamp date_of_birth =6;
+}
+
+
+
+message IprsDetails {
+  string birth_certificate_number =1;
+  string national_id_number =2;
+  string passport_number =3;
+  string residency_permit_number =4;
+  string work_permit_number =5;
+}

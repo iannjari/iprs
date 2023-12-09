@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package iprs.document.v1;
+
+import "google/protobuf/timestamp.proto";
+option java_multiple_files = true;
+
+message ApplyDocumentCmd {
+
+}
+
+message IssueDocumentCmd {
+
+}
