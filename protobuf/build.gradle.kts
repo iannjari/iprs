@@ -38,6 +38,16 @@ protobuf {
 	}
 }
 
+tasks.register<JavaCompile>("compileProtoJava") {
+	classpath = configurations["compileClasspath"]
+}
+
+tasks.register<Jar>("generateProtoJar") {
+	dependsOn("compileProtoJava")
+	from(sourceSets["main"].output)
+	archiveFileName.set("proto-generated.jar")
+	destinationDirectory.set(file("$buildDir/libs"))
+}
 
 
 tasks.getByName("compileJava") {
