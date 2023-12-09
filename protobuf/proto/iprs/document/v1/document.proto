@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package iprs.document.v1;
+option java_multiple_files = true;
+
+
+import "google/protobuf/timestamp.proto";

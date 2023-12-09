@@ -8,4 +8,6 @@ repositories {
 }
 
 dependencies {
+    implementation (project(":protobuf"))
+
 }

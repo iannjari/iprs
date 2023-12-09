@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package iprs.person.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+message RegisterBirthCmd {
+
+}
+
+message UpdatePersonDetailsCmd {
+
+}
+
+message RecordDeathCmd {
+
+}
+
+message AmendPersonalDetailsCmd {
+
+}
+service PersonService{
+  rpc RegisterBirth(RegisterBirthCmd) returns (RegisterBirthCmd) {}
+}
