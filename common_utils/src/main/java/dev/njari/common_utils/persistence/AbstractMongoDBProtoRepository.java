@@ -1,7 +1,9 @@
 package dev.njari.common_utils.persistence;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
+import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.function.Supplier;
@@ -26,6 +28,23 @@ public abstract class AbstractMongoDBProtoRepository<X extends Message>{
         this.supplier = supplier;
         this.protobufJsonPrinter = JsonFormat.printer().preservingProtoFieldNames().includingDefaultValueFields();
         this.protobufJsonParser = JsonFormat.parser().ignoringUnknownFields();
+    }
+
+    /**
+     * Populate Message from BSON document
+     * @param doc - BSON doc
+     * @return -protobuf message
+     */
+    protected Message populateMessage(Document doc) {
+
+        try {
+            var builder = supplier.get().newBuilderForType();
+            protobufJsonParser.merge(doc.toJson(), builder);
+            return builder.build();
+
+        } catch (InvalidProtocolBufferException e) {
+            throw new RuntimeException("Exception during document parse in AbstractMongoDBProtoRepository: {}", e);
+        }
     }
 
 
