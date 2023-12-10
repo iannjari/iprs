@@ -11,9 +11,6 @@ repositories {
 }
 
 dependencies {
-	api("com.google.protobuf:protobuf-java:3.21.6")
-	// https://mvnrepository.com/artifact/com.google.protobuf/protobuf-gradle-plugin
-	runtimeOnly("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
 	implementation("io.grpc:grpc-all:1.49.1")
 }
 
