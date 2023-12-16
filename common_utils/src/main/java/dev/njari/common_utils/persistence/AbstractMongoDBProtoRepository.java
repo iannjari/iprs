@@ -25,7 +25,7 @@ public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV
     protected final Supplier<X> supplier;
     protected JsonFormat.Printer protobufJsonPrinter;
     protected JsonFormat.Parser protobufJsonParser;
-    protected String messageIdField ="id";
+    protected String messageIdField;
     private static final String MONGO_ID_FIELD = "_id";
 
     public AbstractMongoDBProtoRepository(MongoTemplate mt, String collection, Supplier<X> supplier, String idField){
@@ -106,7 +106,7 @@ public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV
         mt.save(jsonDoc,this.collection);
     }
 
-    // save all
+    // TODO: save all
 
     // delete
     public void delete(Query query) {
