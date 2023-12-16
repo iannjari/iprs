@@ -3,24 +3,28 @@ syntax = "proto3";
 package iprs.person.v1;
 
 import "google/protobuf/timestamp.proto";
+import "iprs/person/v1/person.proto";
 
 option java_multiple_files = true;
 
 message RegisterBirthCmd {
-
+  string id =1;
+  Person template =2;
 }
 
 message UpdatePersonDetailsCmd {
-
+  string id =1;
+  Person template =2;
 }
 
 message RecordDeathCmd {
-
+  string id =1;
+  string person_id =2;
+  google.protobuf.Timestamp time_of_death =3;
 }
 
-message AmendPersonalDetailsCmd {
-
-}
 service PersonService{
   rpc RegisterBirth(RegisterBirthCmd) returns (RegisterBirthCmd) {}
+  rpc UpdatePersonDetails(UpdatePersonDetailsCmd) returns (UpdatePersonDetailsCmd) {}
+  rpc RecordDeath(RecordDeathCmd) returns (RecordDeathCmd) {}
 }

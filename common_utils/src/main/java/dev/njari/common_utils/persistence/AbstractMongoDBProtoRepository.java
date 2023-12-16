@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @author njari_mathenge
@@ -94,7 +93,7 @@ public abstract class AbstractMongoDBProtoRepository<X extends Message>{
     }
 
     // save
-    public void save(X message) {
+    public X save(X message) {
         Document jsonDoc = null;
         try {
             jsonDoc = Document.parse(protobufJsonPrinter.print(message));
@@ -103,7 +102,7 @@ public abstract class AbstractMongoDBProtoRepository<X extends Message>{
             throw new RuntimeException(e.getMessage());
         }
         jsonDoc.put(MONGO_ID_FIELD,jsonDoc.getString(messageIdField));
-        mt.save(jsonDoc,this.collection);
+        return populateMessage(mt.save(jsonDoc,this.collection));
     }
 
     // TODO: save all

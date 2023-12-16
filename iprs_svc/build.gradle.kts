@@ -8,6 +8,8 @@ repositories {
 }
 
 dependencies {
+    // proto
     implementation (project(":protobuf"))
-
+    // common-utils
+    implementation(project(":common_utils"))
 }
