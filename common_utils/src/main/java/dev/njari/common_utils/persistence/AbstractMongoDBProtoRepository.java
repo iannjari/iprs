@@ -1,6 +1,6 @@
 package dev.njari.common_utils.persistence;
 
-import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.Internal;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
@@ -19,20 +19,20 @@ import java.util.function.Supplier;
  * github.com/iannjari
  */
 
-public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV3, X extends Message.Builder>{
+public abstract class AbstractMongoDBProtoRepository<X extends Message>{
     protected final MongoTemplate mt;
     protected final String collection;
-    protected final Supplier<X> supplier;
+    protected final Class<X> type;
     protected JsonFormat.Printer protobufJsonPrinter;
     protected JsonFormat.Parser protobufJsonParser;
-    protected String messageIdField ="id";
+    protected String messageIdField;
     private static final String MONGO_ID_FIELD = "_id";
 
-    public AbstractMongoDBProtoRepository(MongoTemplate mt, String collection, Supplier<X> supplier, String idField){
+    public AbstractMongoDBProtoRepository(MongoTemplate mt, String collection, Class<X> type, String idField){
 
         this.mt = mt;
         this.collection = collection;
-        this.supplier = supplier;
+        this.type = type;
         this.protobufJsonPrinter = JsonFormat.printer().preservingProtoFieldNames().includingDefaultValueFields();
         this.protobufJsonParser = JsonFormat.parser().ignoringUnknownFields();
         this.messageIdField = idField;
@@ -46,9 +46,9 @@ public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV
     protected X populateMessage(Document doc) {
 
         try {
-            var builder = supplier.get();
+            var builder = Internal.getDefaultInstance(type).newBuilderForType();
             protobufJsonParser.merge(doc.toJson(), builder);
-            return builder;
+            return (X) builder;
 
         } catch (InvalidProtocolBufferException e) {
             throw new RuntimeException("Exception during document parse in AbstractMongoDBProtoRepository: {}", e);
@@ -94,7 +94,7 @@ public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV
     }
 
     // save
-    public void save(T message) {
+    public void save(X message) {
         Document jsonDoc = null;
         try {
             jsonDoc = Document.parse(protobufJsonPrinter.print(message));
@@ -106,7 +106,7 @@ public abstract class AbstractMongoDBProtoRepository<T extends GeneratedMessageV
         mt.save(jsonDoc,this.collection);
     }
 
-    // save all
+    // TODO: save all
 
     // delete
     public void delete(Query query) {
