@@ -1,0 +1,8 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /svc/iprs
+
+grpc:
+  server:
+    port: 9090
