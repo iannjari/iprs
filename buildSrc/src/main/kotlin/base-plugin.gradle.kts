@@ -8,6 +8,8 @@ repositories {
     mavenCentral()
 }
 
+extra["netDevhVersion"] = "2.14.0.RELEASE"
+
 dependencies {
     // lombok
     compileOnly("org.projectlombok:lombok")
@@ -29,8 +31,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 
 
+    // proto
     api("com.google.protobuf:protobuf-java:3.21.6")
     api("com.google.protobuf:protobuf-java-util:3.21.12")
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-gradle-plugin
     runtimeOnly("com.google.protobuf:protobuf-gradle-plugin:0.9.4")
+
+    // netflix grpc spring boot starter
+    implementation("net.devh:grpc-client-spring-boot-starter:${property("netDevhVersion")}")
+    implementation("net.devh:grpc-server-spring-boot-starter:${property("netDevhVersion")}")
+    implementation("net.devh:grpc-spring-boot-starter:${property("netDevhVersion")}")
 }
