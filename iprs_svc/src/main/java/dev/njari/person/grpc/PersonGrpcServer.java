@@ -1,6 +1,6 @@
 package dev.njari.person.grpc;
 
-import dev.njari.person.service.BirthRegistrationService;
+import dev.njari.person.service.RegistrationService;
 import io.grpc.stub.StreamObserver;
 import iprs.person.v1.PersonServiceGrpc;
 import iprs.person.v1.RecordDeathCmd;
@@ -19,7 +19,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @RequiredArgsConstructor
 public class PersonGrpcServer extends PersonServiceGrpc.PersonServiceImplBase {
 
-    private final BirthRegistrationService birthRegistrationService;
+    private final RegistrationService registrationService;
 
     /**
      * @param request
@@ -27,7 +27,7 @@ public class PersonGrpcServer extends PersonServiceGrpc.PersonServiceImplBase {
      */
     @Override
     public void registerBirth(RegisterBirthCmd request, StreamObserver<RegisterBirthCmd> responseObserver) {
-        RegisterBirthCmd response =  birthRegistrationService.registerBirth(request);
+        RegisterBirthCmd response =  registrationService.registerBirth(request);
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -39,7 +39,10 @@ public class PersonGrpcServer extends PersonServiceGrpc.PersonServiceImplBase {
      */
     @Override
     public void updatePersonDetails(UpdatePersonDetailsCmd request, StreamObserver<UpdatePersonDetailsCmd> responseObserver) {
-        super.updatePersonDetails(request, responseObserver);
+        UpdatePersonDetailsCmd response = registrationService.updatePersonDetails(request);
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     /**
@@ -48,6 +51,9 @@ public class PersonGrpcServer extends PersonServiceGrpc.PersonServiceImplBase {
      */
     @Override
     public void recordDeath(RecordDeathCmd request, StreamObserver<RecordDeathCmd> responseObserver) {
-        super.recordDeath(request, responseObserver);
+        RecordDeathCmd response = registrationService.recordDeath(request);
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
