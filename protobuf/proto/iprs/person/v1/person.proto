@@ -13,6 +13,8 @@ message Person {
   string other_names =4;
   IprsDetails iprs_details =5;
   google.protobuf.Timestamp date_of_birth =6;
+  bool is_alive = 7;
+  google.protobuf.Timestamp date_of_death =8;
 }
 
 
