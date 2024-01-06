@@ -4,4 +4,68 @@ package iprs.document.v1;
 option java_multiple_files = true;
 
 
-//import "google/protobuf/timestamp.proto";
+import "google/protobuf/timestamp.proto";
+
+enum Document {
+  BIRTH_CERTIFICATE =0;
+  NATIONAL_ID =1;
+  PASSPORT =2;
+  DEATH_CERTIFICATE =3;
+}
+
+message BirthCertificate {
+  string id = 1;
+  string person_id =2;
+  string full_name =3;
+  int32 birth_registration_number =4;
+  string mothers_full_name =5;
+  string fathers_full_name =6;
+  string mothers_iprs_id =7;
+  string fathers_iprs_id =8;
+  string county_of_birth =9;
+  string place_of_birth =10;
+  google.protobuf.Timestamp time_of_issue =11;
+}
+
+
+message NationalIdCard {
+  string id = 1;
+  int32 id_no =2;
+  string person_id =4;
+  string full_name =3;
+  int32 birth_registration_number =14;
+  string mothers_full_name =5;
+  string fathers_full_name =6;
+  string mothers_iprs_id =7;
+  string fathers_iprs_id =8;
+  string county_of_birth =9;
+  string place_of_birth =10;
+  google.protobuf.Timestamp time_of_issue =11;
+  string place_of_issue =13;
+}
+
+
+message DeathCertificate {
+  string id = 1;
+  string person_id =2;
+  string full_name =3;
+  int32 death_registration_number =4;
+  string county_of_death =9;
+  string place_of_death =10;
+  google.protobuf.Timestamp time_of_issue =11;
+}
+
+
+message Passport {
+  string id = 1;
+  string person_id =2;
+  string full_name =3;
+  int32 birth_registration_number =4;
+  string mothers_full_name =5;
+  string fathers_full_name =6;
+  string mothers_iprs_id =7;
+  string fathers_iprs_id =8;
+  string county_of_birth =9;
+  string place_of_birth =10;
+  google.protobuf.Timestamp time_of_issue =11;
+}
