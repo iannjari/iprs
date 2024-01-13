@@ -2,17 +2,28 @@ syntax = "proto3";
 
 package iprs.document.v1;
 
-//import "google/protobuf/timestamp.proto";
+import "iprs/document/v1/document.proto";
+
 option java_multiple_files = true;
 
 message ApplyDocumentCmd {
-
+  string id =1;
+  Document document_template =2;
 }
 
 message IssueDocumentCmd {
+  string id =1;
+  Document document_template =2;
 
 }
 
 message AmendDocumentCmd {
+  string id =1;
+  Document document_template =2;
+}
 
+service DocumentService {
+  rpc ApplyForDocument(ApplyDocumentCmd) returns (ApplyDocumentCmd) {}
+  rpc IssueDocument(IssueDocumentCmd) returns (IssueDocumentCmd) {}
+  rpc AmendDocument(AmendDocumentCmd) returns (AmendDocumentCmd) {}
 }
