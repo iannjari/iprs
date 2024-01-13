@@ -2,37 +2,28 @@ syntax = "proto3";
 
 package iprs.document.v1;
 
-
-//import "google/protobuf/timestamp.proto";
-
 import "iprs/document/v1/document.proto";
 
 option java_multiple_files = true;
 
 message ApplyDocumentCmd {
   string id =1;
-  Document document =2;
-  Passport passport_template =3;
-  NationalIdCard id_template =4;
-  BirthCertificate birth_cert_template =5;
-  DeathCertificate death_cert_template =6;
+  Document document_template =2;
 }
 
 message IssueDocumentCmd {
   string id =1;
-  Document document =2;
-  Passport passport_template =3;
-  NationalIdCard id_template =4;
-  BirthCertificate birth_cert_template =5;
-  DeathCertificate death_cert_template =6;
+  Document document_template =2;
 
 }
 
 message AmendDocumentCmd {
   string id =1;
-  Document document =2;
-  Passport passport_template =3;
-  NationalIdCard id_template =4;
-  BirthCertificate birth_cert_template =5;
-  DeathCertificate death_cert_template =6;
+  Document document_template =2;
+}
+
+service DocumentService {
+  rpc ApplyForDocument(ApplyDocumentCmd) returns (ApplyDocumentCmd) {}
+  rpc IssueDocument(IssueDocumentCmd) returns (IssueDocumentCmd) {}
+  rpc AmendDocument(AmendDocumentCmd) returns (AmendDocumentCmd) {}
 }

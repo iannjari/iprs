@@ -6,11 +6,19 @@ option java_multiple_files = true;
 
 import "google/protobuf/timestamp.proto";
 
-enum Document {
+enum DocumentType {
   BIRTH_CERTIFICATE =0;
   NATIONAL_ID =1;
   PASSPORT =2;
   DEATH_CERTIFICATE =3;
+}
+
+message Document {
+  DocumentType type =1;
+  BirthCertificate birth_certificate =2;
+  NationalIdCard id_card =3;
+  Passport passport =4;
+  DeathCertificate death_certificate =5;
 }
 
 message BirthCertificate {
