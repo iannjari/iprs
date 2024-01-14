@@ -8,15 +8,15 @@ option java_multiple_files = true;
 
 message RecordMovementCmd {
   string id =1;
-  Movement document_template =2;
+  Movement template =2;
 }
 
 message UpdateMovementCmd {
   string id =1;
-  Movement document_template =2;
+  Movement template =2;
 }
 
-service DocumentService {
+service MigrationService {
   rpc RecordMovement(RecordMovementCmd) returns (RecordMovementCmd) {}
   rpc UpdateMovement(UpdateMovementCmd) returns (UpdateMovementCmd) {}
 }
