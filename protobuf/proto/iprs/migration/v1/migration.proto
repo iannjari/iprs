@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package iprs.migration.v1;
+option java_multiple_files = true;
+
+
+import "google/protobuf/timestamp.proto";
+import "iprs/document/v1/document.proto";
+
+enum MovementType {
+  IMMIGRATION =0;
+  EMIGRATION =1;
+  INBOUND_DEPORTATION =2;
+  OUTBOUND_DEPORTATION =3;
+}
+
+message Movement {
+  string id =1;
+  MovementType type =2;
+  string iprs_svc_id =3;
+  document.v1.DocumentType document_used =5;
+  string document_id =6;
+  string country =7;
+  string port_of_entry_or_exit =8;
+}

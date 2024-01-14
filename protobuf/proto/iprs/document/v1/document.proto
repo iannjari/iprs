@@ -11,6 +11,7 @@ enum DocumentType {
   NATIONAL_ID =1;
   PASSPORT =2;
   DEATH_CERTIFICATE =3;
+  INTERSTATE_PASS =4;
 }
 
 message Document {
