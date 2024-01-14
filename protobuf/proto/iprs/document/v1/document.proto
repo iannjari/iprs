@@ -20,6 +20,7 @@ message Document {
   NationalIdCard id_card =3;
   Passport passport =4;
   DeathCertificate death_certificate =5;
+  InterstatePass interstate_pass =6;
 }
 
 message BirthCertificate {
@@ -77,4 +78,13 @@ message Passport {
   string county_of_birth =9;
   string place_of_birth =10;
   google.protobuf.Timestamp time_of_issue =11;
+}
+
+message InterstatePass {
+  string id = 1;
+  string person_id =2;
+  string full_name =3;
+  int32 birth_registration_number =4;
+  google.protobuf.Timestamp time_of_issue =11;
+  google.protobuf.Timestamp valid_till =12;
 }

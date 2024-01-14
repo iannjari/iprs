@@ -13,8 +13,9 @@ message ApplyDocumentCmd {
 
 message IssueDocumentCmd {
   string id =1;
-  Document document_template =2;
-
+  string document_id =2;
+  DocumentType document_type =3;
+  bool approved = 4;
 }
 
 message AmendDocumentCmd {

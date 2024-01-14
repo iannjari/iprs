@@ -1,13 +1,12 @@
 package dev.njari.person.service;
 
+import com.google.protobuf.Timestamp;
 import dev.njari.person.repository.PersonRepository;
-import iprs.person.v1.Person;
-import iprs.person.v1.RecordDeathCmd;
-import iprs.person.v1.RegisterBirthCmd;
-import iprs.person.v1.UpdatePersonDetailsCmd;
+import iprs.person.v1.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Service
@@ -20,7 +19,15 @@ public class RegistrationService {
         // validate
         validate(cmd);
         // save
-        Person person = personRepository.save(cmd.getTemplate());
+        Person.Builder builder = Person.newBuilder(cmd.getTemplate());
+        builder.setIsAlive(true)
+                .setIprsDetails(IprsDetails.newBuilder()
+                        .setDateOfRegistration(Timestamp.newBuilder()
+                                .setNanos(Instant.now().getNano())
+                                .setSeconds(Instant.now().getEpochSecond()))
+                .build());
+
+        Person person = personRepository.save(builder.build());
         return cmd.toBuilder()
                 .setTemplate(person)
                 .build();
@@ -56,7 +63,7 @@ public class RegistrationService {
         if (cmd.getTemplate().getFirstName().isBlank() &&
                 cmd.getTemplate().getFirstName().isBlank()) throw new IllegalArgumentException ("Must have first or last name!");
         if (!cmd.getTemplate().hasDateOfBirth()) throw new IllegalArgumentException("Command must have DoB!");
-        if (!cmd.getTemplate().hasIprsDetails()) throw new IllegalArgumentException("Command must have Iprs Details!");
+        if (cmd.getTemplate().hasIprsDetails()) throw new IllegalArgumentException("Command cannot have Iprs Details!");
     }
 
     private void validate(UpdatePersonDetailsCmd cmd) {
