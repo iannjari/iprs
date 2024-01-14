@@ -47,7 +47,7 @@ public abstract class AbstractMongoDBProtoRepository<X extends Message>{
         try {
             var builder = Internal.getDefaultInstance(type).newBuilderForType();
             protobufJsonParser.merge(doc.toJson(), builder);
-            return (X) builder;
+            return (X) builder.build();
 
         } catch (InvalidProtocolBufferException e) {
             throw new RuntimeException("Exception during document parse in AbstractMongoDBProtoRepository: {}", e);
