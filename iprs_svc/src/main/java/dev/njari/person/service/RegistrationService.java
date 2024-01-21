@@ -4,6 +4,8 @@ import com.google.protobuf.Timestamp;
 import dev.njari.person.repository.PersonRepository;
 import iprs.person.v1.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,6 +16,10 @@ import java.util.Objects;
 public class RegistrationService {
 
     private final PersonRepository personRepository;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    @Value("kafka.person.topic")
+    private String personTopic;
 
     public RegisterBirthCmd registerBirth(RegisterBirthCmd cmd) {
         // validate
@@ -28,6 +34,7 @@ public class RegistrationService {
                 .build());
 
         Person person = personRepository.save(builder.build());
+        kafkaTemplate.send(personTopic, person.getId(), person);
         return cmd.toBuilder()
                 .setTemplate(person)
                 .build();
@@ -38,6 +45,7 @@ public class RegistrationService {
         validate(cmd);
         // update and save
         Person person = personRepository.save(cmd.getTemplate());
+        kafkaTemplate.send(personTopic, person.getId(), person);
 
         return cmd.toBuilder()
                 .setTemplate(person)
@@ -53,7 +61,8 @@ public class RegistrationService {
         if (Objects.isNull(person)) throw new RuntimeException("Person with id: "
                 .concat(cmd.getPersonId()).concat(" not found"));
 
-        personRepository.save(person.toBuilder().setDateOfDeath(cmd.getTimeOfDeath()).setIsAlive(false).build());
+        person = personRepository.save(person.toBuilder().setDateOfDeath(cmd.getTimeOfDeath()).setIsAlive(false).build());
+        kafkaTemplate.send(personTopic, person.getId(), person);
 
         return cmd;
     }

@@ -42,6 +42,10 @@ dependencies {
     implementation("net.devh:grpc-client-spring-boot-starter:${property("netDevhVersion")}")
     implementation("net.devh:grpc-server-spring-boot-starter:${property("netDevhVersion")}")
     implementation("net.devh:grpc-spring-boot-starter:${property("netDevhVersion")}")
+
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka")
+    implementation("io.confluent:kafka-protobuf-serializer")
 }
 
 jib {
