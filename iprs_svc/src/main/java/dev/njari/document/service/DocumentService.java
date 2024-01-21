@@ -6,8 +6,10 @@ import dev.njari.person.repository.PersonRepository;
 import iprs.document.v1.*;
 import iprs.person.v1.Person;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -30,6 +32,10 @@ public class DocumentService {
     private final BirthCertificateRepository birthCertificateRepo;
     private final DeathCertificateRepository deathCertificateRepo;
     private final PersonRepository personRepo;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    @Value("kafka.document.topic")
+    private String docTopic;
 
     public ApplyDocumentCmd applyForDocument(ApplyDocumentCmd cmd) {
         validate(cmd);
@@ -46,6 +52,8 @@ public class DocumentService {
                         .concat(cmd.getDocumentTemplate().getBirthCertificate().getPersonId())
                         .concat(" not found!"));
                 BirthCertificate birthCert = birthCertificateRepo.save(cmd.getDocumentTemplate().getBirthCertificate());
+                kafkaTemplate.send(docTopic, birthCert.getId(), birthCert);
+
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setBirthCertificate(birthCert.toBuilder())).build();
                 break;
@@ -58,6 +66,8 @@ public class DocumentService {
                         .concat(cmd.getDocumentTemplate().getIdCard().getPersonId())
                         .concat(" not found!"));
                 NationalIdCard id = nationalIdRepo.save(cmd.getDocumentTemplate().getIdCard());
+                kafkaTemplate.send(docTopic, id.getId(), id);
+
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setIdCard(id)).build();
                 break;
@@ -70,6 +80,8 @@ public class DocumentService {
                         .concat(cmd.getDocumentTemplate().getDeathCertificate().getPersonId())
                         .concat(" not found!"));
                 DeathCertificate deathCert = deathCertificateRepo.save(cmd.getDocumentTemplate().getDeathCertificate());
+                kafkaTemplate.send(docTopic, deathCert.getId(), deathCert);
+
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setDeathCertificate(deathCert)).build();
                 break;
@@ -82,6 +94,8 @@ public class DocumentService {
                         .concat(cmd.getDocumentTemplate().getPassport().getPersonId())
                         .concat(" not found!"));
                 Passport passport = passportRepo.save(cmd.getDocumentTemplate().getPassport());
+                kafkaTemplate.send(docTopic, passport.getId(), passport);
+
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setPassport(passport)).build();
                 break;
@@ -94,6 +108,8 @@ public class DocumentService {
                         .concat(cmd.getDocumentTemplate().getInterstatePass().getPersonId())
                         .concat(" not found!"));
                 InterstatePass pass = interstatePassRepo.save(cmd.getDocumentTemplate().getInterstatePass());
+                kafkaTemplate.send(docTopic, pass.getId(), pass);
+
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setInterstatePass(pass)).build();
                 break;
@@ -123,6 +139,8 @@ public class DocumentService {
                         .setSeconds(Instant.now().getEpochSecond())
                         .build()).build();
                 birthCertificateRepo.save(birthCert);
+                kafkaTemplate.send(docTopic, birthCert.getId(), birthCert);
+
                 break;
             case NATIONAL_ID:
                 NationalIdCard idCard = nationalIdRepo.findById(cmd.getId());
@@ -133,6 +151,8 @@ public class DocumentService {
                         .setSeconds(Instant.now().getEpochSecond())
                         .build()).build();
                 nationalIdRepo.save(idCard);
+                kafkaTemplate.send(docTopic, idCard.getId(), idCard);
+
                 break;
             case DEATH_CERTIFICATE:
                 DeathCertificate deathCert = deathCertificateRepo.findById(cmd.getId());
@@ -143,6 +163,8 @@ public class DocumentService {
                         .setSeconds(Instant.now().getEpochSecond())
                         .build()).build();
                 deathCertificateRepo.save(deathCert);
+                kafkaTemplate.send(docTopic, deathCert.getId(), deathCert);
+
                 break;
             case PASSPORT:
                 Passport passport = passportRepo.findById(cmd.getId());
@@ -153,6 +175,8 @@ public class DocumentService {
                         .setSeconds(Instant.now().getEpochSecond())
                         .build()).build();
                 passportRepo.save(passport);
+                kafkaTemplate.send(docTopic, passport.getId(), passport);
+
                 break;
             case INTERSTATE_PASS:
                 InterstatePass pass = interstatePassRepo.findById(cmd.getId());
@@ -163,6 +187,8 @@ public class DocumentService {
                         .setSeconds(Instant.now().getEpochSecond())
                         .build()).build();
                 interstatePassRepo.save(pass);
+                kafkaTemplate.send(docTopic, pass.getId(), pass);
+
                 break;
             default:
         }
