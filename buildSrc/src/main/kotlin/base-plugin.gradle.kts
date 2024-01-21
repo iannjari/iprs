@@ -2,6 +2,7 @@ plugins {
     `java-library`
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+    id("com.google.cloud.tools.jib")
 }
 
 repositories {
@@ -41,4 +42,11 @@ dependencies {
     implementation("net.devh:grpc-client-spring-boot-starter:${property("netDevhVersion")}")
     implementation("net.devh:grpc-server-spring-boot-starter:${property("netDevhVersion")}")
     implementation("net.devh:grpc-spring-boot-starter:${property("netDevhVersion")}")
+}
+
+jib {
+//    from {
+//        image = ""
+//    }
+    to.image = project.name
 }
