@@ -7,6 +7,8 @@ import iprs.migration.v1.UpdateMovementCmd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class MigrationService {
@@ -26,20 +28,27 @@ public class MigrationService {
     public UpdateMovementCmd updateMovement(UpdateMovementCmd cmd) {
         // validate
         validate(cmd);
+
+        Movement movement = movementRepo.findById(cmd.getId());
+
+        if (Objects.isNull(movement)) throw new RuntimeException("Movement with id not found!");
+
         // update and save
-        Movement movement = movementRepo.save(cmd.getTemplate());
+        Movement movement1 = movementRepo.save(cmd.getTemplate());
 
         return cmd.toBuilder()
-                .setTemplate(movement)
+                .setTemplate(movement1)
                 .build();
     }
 
     private void validate(RecordMovementCmd cmd) {
         if (!cmd.hasTemplate()) throw new IllegalArgumentException("Command must have template!");
+        if (cmd.getTemplate().getIprsSvcId().isBlank()) throw new IllegalArgumentException("Request must have an IPRS id!");
     }
 
     private void validate(UpdateMovementCmd cmd) {
         if (!cmd.hasTemplate()) throw new IllegalArgumentException("Command must have template!");
+        if (cmd.getTemplate().getIprsSvcId().isBlank()) throw new IllegalArgumentException("Request must have an IPRS id!");
         if (!cmd.getTemplate().getId().isBlank()) throw new IllegalArgumentException("Id cannot be null");
 
     }

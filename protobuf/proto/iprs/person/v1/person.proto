@@ -25,4 +25,5 @@ message IprsDetails {
   string passport_number =3;
   string residency_permit_number =4;
   string work_permit_number =5;
+  google.protobuf.Timestamp date_of_registration =6;
 }
