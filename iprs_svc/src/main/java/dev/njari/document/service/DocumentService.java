@@ -2,11 +2,16 @@ package dev.njari.document.service;
 
 import com.google.protobuf.Timestamp;
 import dev.njari.document.repository.*;
+import dev.njari.person.repository.PersonRepository;
 import iprs.document.v1.*;
+import iprs.person.v1.Person;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,36 +29,75 @@ public class DocumentService {
     private final NationalIdRepository nationalIdRepo;
     private final BirthCertificateRepository birthCertificateRepo;
     private final DeathCertificateRepository deathCertificateRepo;
+    private final PersonRepository personRepo;
 
     public ApplyDocumentCmd applyForDocument(ApplyDocumentCmd cmd) {
         validate(cmd);
+        Query query;
+        List<Person> persons;
 
         switch (cmd.getDocumentTemplate().getType()) {
+
             case BIRTH_CERTIFICATE:
+                query = Query.query(Criteria.where("person_id")
+                        .is(cmd.getDocumentTemplate().getBirthCertificate().getPersonId()));
+                persons = personRepo.findAll(query);
+                if (persons.isEmpty()) throw new RuntimeException("Person with id: "
+                        .concat(cmd.getDocumentTemplate().getBirthCertificate().getPersonId())
+                        .concat(" not found!"));
                 BirthCertificate birthCert = birthCertificateRepo.save(cmd.getDocumentTemplate().getBirthCertificate());
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
-                        .setBirthCertificate(birthCert)).build();
+                        .setBirthCertificate(birthCert.toBuilder())).build();
                 break;
+
             case NATIONAL_ID:
+                query = Query.query(Criteria.where("person_id")
+                        .is(cmd.getDocumentTemplate().getIdCard().getPersonId()));
+                persons = personRepo.findAll(query);
+                if (persons.isEmpty()) throw new RuntimeException("Person with id: "
+                        .concat(cmd.getDocumentTemplate().getIdCard().getPersonId())
+                        .concat(" not found!"));
                 NationalIdCard id = nationalIdRepo.save(cmd.getDocumentTemplate().getIdCard());
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setIdCard(id)).build();
                 break;
+
             case DEATH_CERTIFICATE:
+                query = Query.query(Criteria.where("person_id")
+                        .is(cmd.getDocumentTemplate().getDeathCertificate().getPersonId()));
+                persons = personRepo.findAll(query);
+                if (persons.isEmpty()) throw new RuntimeException("Person with id: "
+                        .concat(cmd.getDocumentTemplate().getDeathCertificate().getPersonId())
+                        .concat(" not found!"));
                 DeathCertificate deathCert = deathCertificateRepo.save(cmd.getDocumentTemplate().getDeathCertificate());
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setDeathCertificate(deathCert)).build();
                 break;
+
             case PASSPORT:
+                query = Query.query(Criteria.where("person_id")
+                        .is(cmd.getDocumentTemplate().getPassport().getPersonId()));
+                persons = personRepo.findAll(query);
+                if (persons.isEmpty()) throw new RuntimeException("Person with id: "
+                        .concat(cmd.getDocumentTemplate().getPassport().getPersonId())
+                        .concat(" not found!"));
                 Passport passport = passportRepo.save(cmd.getDocumentTemplate().getPassport());
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setPassport(passport)).build();
                 break;
+
             case INTERSTATE_PASS:
+                query = Query.query(Criteria.where("person_id")
+                        .is(cmd.getDocumentTemplate().getInterstatePass().getPersonId()));
+                persons = personRepo.findAll(query);
+                if (persons.isEmpty()) throw new RuntimeException("Person with id: "
+                        .concat(cmd.getDocumentTemplate().getInterstatePass().getPersonId())
+                        .concat(" not found!"));
                 InterstatePass pass = interstatePassRepo.save(cmd.getDocumentTemplate().getInterstatePass());
                 cmd = cmd.toBuilder().setDocumentTemplate(cmd.getDocumentTemplate().toBuilder()
                         .setInterstatePass(pass)).build();
                 break;
+
             case UNRECOGNIZED:
                 throw new RuntimeException("Unrecognized/un-implemented type of document: "
                         .concat(cmd.getDocumentTemplate().getType().name()));
