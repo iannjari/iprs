@@ -31,3 +31,16 @@ spec:
             secretKeyRef:
               name: mongo-secrets
               key: some-api-key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iprs-svc-port
+spec:
+  selector:
+    app: iprs-svc
+  ports:
+  - port: 9191
+    targetPort: 9090
+    protocol: TCP
