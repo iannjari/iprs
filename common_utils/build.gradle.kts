@@ -12,7 +12,6 @@ repositories {
 
 dependencies {
     compileOnly("org.springframework.kafka:spring-kafka")
-    compileOnly("io.confluent:kafka-protobuf-serializer")
 }
 
 tasks.test {

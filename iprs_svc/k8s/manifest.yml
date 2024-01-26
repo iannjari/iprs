@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iprs-svc
+  labels:
+    app: iprs-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iprs-svc
+  template:
+    metadata:
+      labels:
+        app: iprs-svc
+    spec:
+      containers:
+      - name: iprs-svc
+        image: iprs_svc:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9090
+          name: grpc-port
+        - containerPort: 8080
+          name: http-port
+        env:
+        - name: MONGO_URL
+          value: mongodb://localhost:27017
+        - name: SOME_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secrets
+              key: some-api-key
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iprs-svc-port
+spec:
+  selector:
+    app: iprs-svc
+  ports:
+  - port: 9191
+    targetPort: 9090
+    protocol: TCP

@@ -45,7 +45,7 @@ dependencies {
 
     // kafka
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("io.confluent:kafka-protobuf-serializer")
+//    implementation("io.confluent:kafka-protobuf-serializer")
 }
 
 jib {
