@@ -10,4 +10,5 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-gradle-plugin:3.0.4")
     implementation("com.google.cloud.tools:jib-gradle-plugin:3.3.1")
+    implementation("com.netflix.graphql.dgs.codegen:graphql-dgs-codegen-gradle:5.6.7")
 }
