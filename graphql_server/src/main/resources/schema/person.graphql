@@ -1,0 +1,80 @@
+type Person {
+    id: String
+    firstName: String
+    lastName: String
+    otherNames: String
+    iprsDetails: IprsDetails
+    dateOfBirth: String
+    isAlive: Boolean
+    dateOfDeath: String
+}
+
+input RegisterPersonInput {
+    firstName: String
+    lastName: String
+    otherNames: String
+    dateOfBirth: String
+    isAlive: Boolean
+    dateOfDeath: String
+}
+
+input UpdatePersonInput {
+    id: String
+    firstName: String
+    lastName: String
+    otherNames: String
+    iprsDetails: IprsDetailsInput
+    dateOfBirth: String
+    isAlive: Boolean
+    dateOfDeath: String
+}
+
+type IprsDetails {
+    birthCertificateNumber: String
+    nationalIdNumber: String
+    passportNumber: String
+    residencyPermitNumber: String
+    workPermitNumber: String
+    dateOfRegistration: String
+}
+
+input IprsDetailsInput {
+    birthCertificateNumber: String
+    nationalIdNumber: String
+    passportNumber: String
+    residencyPermitNumber: String
+    workPermitNumber: String
+    dateOfRegistration: String
+}
+
+input RegisterBirthRequest {
+    id: String
+    template: RegisterPersonInput
+}
+
+type RegisterBirthResponse{
+    id: String
+    person: Person
+}
+
+input UpdatePersonDetailsRequest {
+    id: String
+    template: UpdatePersonInput
+}
+
+type UpdatePersonDetailsResponse {
+    id: String
+    template: Person
+}
+
+input RecordDeathRequest {
+    id: String
+    personId: String
+    timeOfDeath: String
+}
+
+type RecordDeathResponse{
+    id: String
+    personId: String
+    timeOfDeath: String
+}

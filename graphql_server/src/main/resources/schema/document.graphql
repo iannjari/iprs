@@ -1,0 +1,194 @@
+
+enum DocumentType {
+    BIRTH_CERTIFICATE
+    NATIONAL_ID
+    PASSPORT
+    DEATH_CERTIFICATE
+    INTERSTATE_PASS
+}
+
+type Document {
+    type: DocumentType
+    birthCertificate: BirthCertificate
+    idCard: NationalIdCard
+    passport: Passport
+    deathCertificate: DeathCertificate
+    interstatePass: InterstatePass
+}
+
+input DocumentInput {
+    type: DocumentType
+    birthCertificate: BirthCertificateInput
+    idCard: NationalIdCardInput
+    passport: PassportInput
+    deathCertificate: DeathCertificateInput
+    interstatePass: InterstatePassInput
+}
+
+type BirthCertificate {
+    id: String
+    personId: String
+    fullName: String
+    birthRegistrationNumber: Int
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+}
+
+input BirthCertificateInput {
+    id: String
+    personId: String
+    fullName: String
+    birthRegistrationNumber: Int
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+}
+
+
+type NationalIdCard {
+    id: String
+    idNo: String
+    personId: String
+    fullName: String
+    birthRegistrationNumber: String
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+    placeOfIssue: String
+}
+
+input NationalIdCardInput {
+    id: String
+    idNo: Int
+    personId: String
+    fullName: String
+    birthRegistrationNumber: String
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+    placeOfIssue: String
+}
+
+
+type DeathCertificate {
+    id: String
+    personId: String
+    fullName: String
+    deathRegistrationNumber: Int
+    countyOfDeath: String
+    placeOfDeath:String
+    timeOfIssue: String
+}
+
+input DeathCertificateInput {
+    id: String
+    personId: String
+    fullName: String
+    deathRegistrationNumber: Int
+    countyOfDeath: String
+    placeOfDeath:String
+    timeOfIssue: String
+}
+
+
+type Passport {
+    id: String
+    number: Int
+    personId: String
+    fullName: String
+    birthRegistrationNumber: String
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+    placeOfIssue: String
+}
+
+input PassportInput {
+    id: String
+    number: Int
+    personId: String
+    fullName: String
+    birthRegistrationNumber: String
+    mothersFullName: String
+    fathersFullName: String
+    mothersIprsId: String
+    fathersIprsId: String
+    countyOfBirth: String
+    placeOfBirth: String
+    timeOfIssue: String
+    placeOfIssue: String
+    validTill: String
+}
+
+type InterstatePass {
+    id: String
+    personId: String
+    fullName: String
+    birthRegistrationNumber: Int
+    timeOfIssue: String
+    validTill: String
+}
+
+input InterstatePassInput {
+    id: String
+    personId: String
+    fullName: String
+    birthRegistrationNumber: Int
+    timeOfIssue: String
+    validTill: String
+}
+
+input ApplyDocumentRequest {
+    id: String
+    document_template: DocumentInput
+}
+
+type ApplyDocumentResponse{
+    id: String
+    document_template: Document
+}
+
+input IssueDocumentRequest {
+    id: String
+    document_id: String
+    document_type: DocumentType
+    approved: Boolean
+}
+
+type IssueDocumentResponse {
+    id: String
+    documentId: String
+    documentType: DocumentType
+    approved: Boolean
+}
+
+input AmendDocumentRequest{
+    id: String
+    documentTemplate: DocumentInput
+}
+
+type AmendDocumentResponse{
+    id: String
+    documentTemplate: Document
+}
