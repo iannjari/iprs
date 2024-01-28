@@ -1,0 +1,7 @@
+type Query {
+
+fetch(string: String!): String
+
+}
+
+

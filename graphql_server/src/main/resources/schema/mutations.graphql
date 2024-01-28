@@ -1,0 +1,12 @@
+type Mutation {
+    registerBirth(registerBirthRequest: RegisterBirthRequest!): RegisterBirthResponse
+    updatePersonDetails(updatePersonDetailsRequest: UpdatePersonDetailsRequest!): UpdatePersonDetailsResponse
+    recordDeath(recordDeathRequest: RecordDeathRequest!): RecordDeathResponse
+
+    recordMovement(recordMovementRequest: RecordMovementRequest!): RecordMovementResponse
+    updateMovement(updateMovementRequest: UpdateMovementRequest!): UpdateMovementResponse
+
+    applyForDocument(applyDocumentRequest: ApplyDocumentRequest!): ApplyDocumentResponse
+    issueDocument(issueDocumentRequest: IssueDocumentRequest!): IssueDocumentResponse
+    amendDocument(amendDocumentRequest: AmendDocumentRequest!): AmendDocumentResponse
+}

@@ -1,0 +1,46 @@
+enum MovementType {
+    IMMIGRATION
+    EMIGRATION
+    INBOUND_DEPORTATION
+    OUTBOUND_DEPORTATION
+}
+
+type Movement {
+    id: String
+    type:MovementType
+    iprsSvcId: String
+    documentUsed: DocumentType
+    documentId: String
+    country: String
+    portOfEntryOrExit: String
+}
+
+input MovementInput {
+    id: String
+    type:MovementType
+    iprsSvcId: String
+    documentUsed: DocumentType
+    documentId: String
+    country: String
+    portOfEntryOrExit: String
+}
+
+input RecordMovementRequest {
+    id: String
+    template: MovementInput
+}
+
+type RecordMovementResponse {
+    id: String
+    template: Movement
+}
+
+input UpdateMovementRequest {
+    id: String
+    template: MovementInput
+}
+
+type UpdateMovementResponse {
+    id: String
+    template: Movement
+}
