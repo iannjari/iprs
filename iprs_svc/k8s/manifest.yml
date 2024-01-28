@@ -36,7 +36,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: iprs-service
+  name: iprs-np
 spec:
   selector:
     app: iprs-svc
