@@ -40,10 +40,10 @@ message BirthCertificate {
 
 message NationalIdCard {
   string id = 1;
-  int32 id_no =2;
+  int64 id_no =2;
   string person_id =4;
   string full_name =3;
-  int32 birth_registration_number =14;
+  int32 birth_certificate_number =14;
   string mothers_full_name =5;
   string fathers_full_name =6;
   string mothers_iprs_id =7;
@@ -59,7 +59,7 @@ message DeathCertificate {
   string id = 1;
   string person_id =2;
   string full_name =3;
-  int32 death_registration_number =4;
+  int32 number =4;
   string county_of_death =9;
   string place_of_death =10;
   google.protobuf.Timestamp time_of_issue =11;
@@ -70,7 +70,7 @@ message Passport {
   string id = 1;
   string person_id =2;
   string full_name =3;
-  int32 birth_registration_number =4;
+  int32 birth_certificate_number =4;
   string mothers_full_name =5;
   string fathers_full_name =6;
   string mothers_iprs_id =7;
@@ -78,13 +78,14 @@ message Passport {
   string county_of_birth =9;
   string place_of_birth =10;
   google.protobuf.Timestamp time_of_issue =11;
+  int64 number =12;
+  string place_of_issue =13;
 }
 
 message InterstatePass {
   string id = 1;
   string person_id =2;
   string full_name =3;
-  int32 birth_registration_number =4;
   google.protobuf.Timestamp time_of_issue =11;
   google.protobuf.Timestamp valid_till =12;
 }

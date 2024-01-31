@@ -56,10 +56,10 @@ input BirthCertificateInput {
 
 type NationalIdCard {
     id: String
-    idNo: String
+    idNo: Int
     personId: String
     fullName: String
-    birthRegistrationNumber: String
+    birthCertificateNumber: String
     mothersFullName: String
     fathersFullName: String
     mothersIprsId: String
@@ -75,7 +75,7 @@ input NationalIdCardInput {
     idNo: Int
     personId: String
     fullName: String
-    birthRegistrationNumber: String
+    birthCertificateNumber: Int
     mothersFullName: String
     fathersFullName: String
     mothersIprsId: String
@@ -91,7 +91,7 @@ type DeathCertificate {
     id: String
     personId: String
     fullName: String
-    deathRegistrationNumber: Int
+    number: Int
     countyOfDeath: String
     placeOfDeath:String
     timeOfIssue: String
@@ -101,7 +101,7 @@ input DeathCertificateInput {
     id: String
     personId: String
     fullName: String
-    deathRegistrationNumber: Int
+    number: Int
     countyOfDeath: String
     placeOfDeath:String
     timeOfIssue: String
@@ -113,7 +113,7 @@ type Passport {
     number: Int
     personId: String
     fullName: String
-    birthRegistrationNumber: String
+    birthCertificateNumber: String
     mothersFullName: String
     fathersFullName: String
     mothersIprsId: String
@@ -129,7 +129,7 @@ input PassportInput {
     number: Int
     personId: String
     fullName: String
-    birthRegistrationNumber: String
+    birthCertificateNumber: String
     mothersFullName: String
     fathersFullName: String
     mothersIprsId: String
@@ -161,18 +161,18 @@ input InterstatePassInput {
 
 input ApplyDocumentRequest {
     id: String
-    document_template: DocumentInput
+    documentTemplate: DocumentInput
 }
 
 type ApplyDocumentResponse{
     id: String
-    document_template: Document
+    documentTemplate: Document
 }
 
 input IssueDocumentRequest {
     id: String
-    document_id: String
-    document_type: DocumentType
+    documentId: String
+    documentType: DocumentType
     approved: Boolean
 }
 
