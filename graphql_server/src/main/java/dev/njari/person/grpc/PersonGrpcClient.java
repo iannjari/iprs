@@ -19,17 +19,17 @@ public class PersonGrpcClient{
 
     @Getter
     @GrpcClient("iprs_svc_client")
-    PersonServiceGrpc.PersonServiceBlockingStub client;
+    PersonServiceGrpc.PersonServiceBlockingStub personServiceBlockingStub;
 
     public RegisterBirthCmd registerBirth(RegisterBirthCmd cmd) {
-        return client.registerBirth(cmd);
+        return personServiceBlockingStub.registerBirth(cmd);
     }
 
     public UpdatePersonDetailsCmd updatePersonDetails(UpdatePersonDetailsCmd cmd) {
-        return client.updatePersonDetails(cmd);
+        return personServiceBlockingStub.updatePersonDetails(cmd);
     }
 
     public RecordDeathCmd recordDeath(RecordDeathCmd cmd) {
-        return client.recordDeath(cmd);
+        return personServiceBlockingStub.recordDeath(cmd);
     }
 }
