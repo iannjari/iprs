@@ -41,7 +41,7 @@ public class MigrationService {
         RecordMovementCmd cmd = map(request);
 
         // make call to server
-        cmd = migrationGrpcClient.updateMovement(cmd);
+        cmd = migrationGrpcClient.recordMovement(cmd);
 
         // map to graphql response and return
         return map(cmd);

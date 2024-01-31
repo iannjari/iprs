@@ -20,7 +20,7 @@ public class MigrationGrpcClient {
     @GrpcClient("iprs_svc_client")
     MigrationServiceGrpc.MigrationServiceBlockingStub migrationServiceBlockingStub;
 
-    public RecordMovementCmd updateMovement(RecordMovementCmd cmd) {
+    public RecordMovementCmd recordMovement(RecordMovementCmd cmd) {
         return migrationServiceBlockingStub.recordMovement(cmd);
     }
     public UpdateMovementCmd updateMovement(UpdateMovementCmd cmd) {
