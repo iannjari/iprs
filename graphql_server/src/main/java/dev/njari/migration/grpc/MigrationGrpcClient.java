@@ -23,7 +23,7 @@ public class MigrationGrpcClient {
     public RecordMovementCmd recordMovement(RecordMovementCmd cmd) {
         return migrationServiceBlockingStub.recordMovement(cmd);
     }
-    public UpdateMovementCmd recordMovement(UpdateMovementCmd cmd) {
+    public UpdateMovementCmd updateMovement(UpdateMovementCmd cmd) {
         return migrationServiceBlockingStub.updateMovement(cmd);
     }
 }
