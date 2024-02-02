@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+  labels:
+    app: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+                - name: kafka
+                  image: bitnami/kafka:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - containerPort: 9092
+                      name: kafka-port-1
+                    - containerPort: 29092
+                      name: kafka-port-2
+                  env:
+                    - name: KAFKA_ZOOKEEPER_CONNECT
+                      value: zookeeper-service:2181
+                    - name: KAFKA_BROKER_ID
+                      value: "1"
+                    - name: KAFKA_ADVERTISED_LISTENERS
+                      value: "LISTENER_INTERNAL://kafka-service:29092,LISTENER_EXTERNAL://kafka-service.default.svc.cluster.local:9092"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+spec:
+  selector:
+    app: kafka
+  type: ClusterIP
+  ports:
+    - port: 9092
+      name: kafka-port-1
+      targetPort: 9092
+      protocol: TCP
+    - port: 29092
+      name: kafka-port-2
+      targetPort: 29092
+      protocol: TCP
