@@ -3,17 +3,12 @@ package dev.njari.person.service;
 import com.netflix.dgs.codegen.generated.types.*;
 import dev.njari.person.grpc.PersonGrpcClient;
 import dev.njari.util.DateConverter;
-import iprs.document.v1.DocumentType;
-import iprs.migration.v1.Movement;
-import iprs.migration.v1.MovementType;
-import iprs.migration.v1.RecordMovementCmd;
-import iprs.migration.v1.UpdateMovementCmd;
+import iprs.person.v1.RecordDeathCmd;
 import iprs.person.v1.RegisterBirthCmd;
 import iprs.person.v1.UpdatePersonDetailsCmd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -67,6 +62,25 @@ public class PersonService {
     }
 
     /**
+     * Record a death
+     * @param request - graphql request
+     * @return - RecordDeathResponse
+     */
+    public RecordDeathResponse registerBirth(RecordDeathRequest request) {
+        // validate the incoming payload
+        validate(request);
+
+        // map the graphql type to protobuf
+        RecordDeathCmd cmd = map(request);
+
+        // make call to server
+        cmd = personGrpcClient.recordDeath(cmd);
+
+        // map to graphql response and return
+        return map(cmd);
+    }
+
+    /**
      * Validate incoming payload
      * @param request - RegisterBirthRequest
      */
@@ -78,6 +92,17 @@ public class PersonService {
         if (Objects.isNull(request.getTemplate().getDateOfBirth())) throw new RuntimeException("DoB must be provided!!");
         if (request.getTemplate().getFirstName().isBlank()) throw new RuntimeException("First name must be provided!");
         if (request.getTemplate().getDateOfBirth().isBlank()) throw new RuntimeException("DoB must be provided!");
+    }
+
+    /**
+     * Validate incoming payload
+     * @param request - RegisterBirthRequest
+     */
+    private void validate(RecordDeathRequest request) {
+        if (Objects.isNull(request.getPersonId())) throw new RuntimeException("Person id must be provided!");
+        if (Objects.isNull(request.getTimeOfDeath())) throw new RuntimeException("Other names can be blank but not null!");
+        if (request.getPersonId().isBlank()) throw new RuntimeException("First name must be provided!");
+        if (request.getPersonId().isBlank()) throw new RuntimeException("DoB must be provided!");
     }
 
     /**
@@ -115,6 +140,20 @@ public class PersonService {
                         .setOtherNames(request.getTemplate().getOtherNames())
                         .build())
                     .build();
+    }
+
+    /**
+     * Convert RecordDeathRequest (graphql) to RecordDeathCmd (protobuf)
+     * @param request - RecordDeathRequest
+     * @return - RecordDeathCmd
+     */
+    private RecordDeathCmd map(RecordDeathRequest request) {
+
+        return RecordDeathCmd.newBuilder()
+                .setTimeOfDeath(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                request.getTimeOfDeath()))
+                .setPersonId(request.getPersonId())
+                .build();
     }
 
     /**
@@ -174,6 +213,20 @@ public class PersonService {
                         .isAlive(cmd.getTemplate().getIsAlive())
                         .otherNames(cmd.getTemplate().getOtherNames())
                         .build())
+                .build();
+    }
+
+    /**
+     * Convert RegisterBirthCmd (protobuf) to RecordDeathResponse (graphql)
+     * @param cmd - RegisterBirthCmd
+     * @return - RecordDeathResponse
+     */
+    private RecordDeathResponse map(RecordDeathCmd cmd) {
+
+        return RecordDeathResponse.newBuilder()
+                .timeOfDeath(DateConverter.ProtoDateToString.INSTANCE.convert(cmd.getTimeOfDeath()))
+                .id(cmd.getId())
+                .personId(cmd.getPersonId())
                 .build();
     }
 
