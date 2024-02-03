@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class PersonGrpcClient{
+public class PersonGrpcClient {
 
     @Getter
     @GrpcClient("iprs_svc_client")

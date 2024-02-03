@@ -2,6 +2,7 @@ package dev.njari.document.service;
 
 import com.netflix.dgs.codegen.generated.types.*;
 import dev.njari.document.grpc.DocumentGrpcClient;
+import dev.njari.util.DateConverter;
 import iprs.document.v1.AmendDocumentCmd;
 import iprs.document.v1.ApplyDocumentCmd;
 import iprs.document.v1.DocumentType;
@@ -220,9 +221,9 @@ public class DocumentService {
                                                 .fathersIprsId(cmd.getDocumentTemplate().getBirthCertificate().getFathersIprsId())
                                                 .countyOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getCountyOfBirth())
                                                 .placeOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getPlaceOfBirth())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getBirthCertificate()
-                                                                .getTimeOfIssue().getSeconds())))
+                                                                .getTimeOfIssue()))
                                                 .build()
                                 )
                                 .deathCertificate(DeathCertificate.newBuilder()
@@ -232,9 +233,9 @@ public class DocumentService {
                                         .number(cmd.getDocumentTemplate().getDeathCertificate().getNumber())
                                         .countyOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getCountyOfDeath())
                                         .placeOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getPlaceOfDeath())
-                                        .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                        .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                 cmd.getDocumentTemplate().getBirthCertificate()
-                                                        .getTimeOfIssue().getSeconds())))
+                                                        .getTimeOfIssue()))
                                         .build()
                                 )
                                 .passport(Passport.newBuilder()
@@ -249,9 +250,9 @@ public class DocumentService {
                                         .fathersIprsId(cmd.getDocumentTemplate().getPassport().getFathersIprsId())
                                         .countyOfBirth(cmd.getDocumentTemplate().getPassport().getCountyOfBirth())
                                         .placeOfBirth(cmd.getDocumentTemplate().getPassport().getPlaceOfBirth())
-                                        .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                        .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                 cmd.getDocumentTemplate().getPassport()
-                                                        .getTimeOfIssue().getSeconds())))
+                                                        .getTimeOfIssue()))
                                         .placeOfIssue(cmd.getDocumentTemplate().getPassport().getPlaceOfIssue())
                                         .build()
                                 )
@@ -268,9 +269,9 @@ public class DocumentService {
                                                 .fathersIprsId(cmd.getDocumentTemplate().getIdCard().getFathersIprsId())
                                                 .countyOfBirth(cmd.getDocumentTemplate().getIdCard().getCountyOfBirth())
                                                 .placeOfBirth(cmd.getDocumentTemplate().getIdCard().getPlaceOfBirth())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getIdCard()
-                                                                .getTimeOfIssue().getSeconds())))
+                                                                .getTimeOfIssue()))
                                                 .placeOfIssue(cmd.getDocumentTemplate().getIdCard().getPlaceOfIssue())
                                                 .build()
                                 )
@@ -279,12 +280,12 @@ public class DocumentService {
                                                 .id(cmd.getDocumentTemplate().getInterstatePass().getId())
                                                 .personId(cmd.getDocumentTemplate().getInterstatePass().getPersonId())
                                                 .fullName(cmd.getDocumentTemplate().getInterstatePass().getFullName())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getInterstatePass()
-                                                                .getTimeOfIssue().getSeconds())))
-                                                .validTill(String.valueOf(Instant.ofEpochSecond(
+                                                                .getTimeOfIssue()))
+                                                .validTill(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getInterstatePass()
-                                                                .getValidTill().getSeconds())))
+                                                                .getValidTill()))
                                                 .build()
                                 )
                                 .build()
@@ -347,9 +348,7 @@ public class DocumentService {
                                 .setFathersIprsId(request.getDocumentTemplate().getPassport().getFathersIprsId())
                                 .setCountyOfBirth(request.getDocumentTemplate().getPassport().getCountyOfBirth())
                                 .setPlaceOfBirth(request.getDocumentTemplate().getPassport().getPlaceOfBirth())
-//                                        .setTimeOfIssue(Timestamp.newBuilder()
-//                                                .setSeconds()
-//                                                        .build())
+                                .setTimeOfIssue(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getPassport().getTimeOfIssue()))
                                 .setPlaceOfIssue(request.getDocumentTemplate().getPassport().getPlaceOfIssue())
                                 .build()));
                 break;
@@ -367,7 +366,7 @@ public class DocumentService {
                                 .setFathersIprsId(request.getDocumentTemplate().getIdCard().getFathersIprsId())
                                 .setCountyOfBirth(request.getDocumentTemplate().getIdCard().getCountyOfBirth())
                                 .setPlaceOfBirth(request.getDocumentTemplate().getIdCard().getPlaceOfBirth())
-//                                .timeOfIssue()
+                                .setTimeOfIssue(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getPassport().getTimeOfIssue()))
                                 .setPlaceOfIssue(request.getDocumentTemplate().getIdCard().getPlaceOfIssue())
                                 .build()).build());
                 break;
@@ -377,8 +376,8 @@ public class DocumentService {
                                 .setId(cmd.getDocumentTemplate().getInterstatePass().getId())
                                 .setPersonId(cmd.getDocumentTemplate().getInterstatePass().getPersonId())
                                 .setFullName(cmd.getDocumentTemplate().getInterstatePass().getFullName())
-//                                .setTimeOfIssue()
-//                                .setValidTill()
+                                .setTimeOfIssue(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getInterstatePass().getTimeOfIssue()))
+                                .setValidTill(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getInterstatePass().getValidTill()))
                                 .build()).build());
                 break;
             case BIRTH_CERTIFICATE:
@@ -394,7 +393,7 @@ public class DocumentService {
                                 .setFathersIprsId(cmd.getDocumentTemplate().getBirthCertificate().getFathersIprsId())
                                 .setCountyOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getCountyOfBirth())
                                 .setPlaceOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getPlaceOfBirth())
-//                                .timeOfIssue()
+                                .setTimeOfIssue(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getBirthCertificate().getTimeOfIssue()))
                                 .build()).build());
                 break;
             case DEATH_CERTIFICATE:
@@ -406,7 +405,7 @@ public class DocumentService {
                                 .setNumber(cmd.getDocumentTemplate().getDeathCertificate().getNumber())
                                 .setCountyOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getCountyOfDeath())
                                 .setPlaceOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getPlaceOfDeath())
-//                                .setTimeOfIssue()
+                                .setTimeOfIssue(DateConverter.StringToProtoDate.INSTANCE.convert(request.getDocumentTemplate().getDeathCertificate().getTimeOfIssue()))
                                 .build()).build());
                 break;
         }
@@ -435,9 +434,9 @@ public class DocumentService {
                                                 .fathersIprsId(cmd.getDocumentTemplate().getBirthCertificate().getFathersIprsId())
                                                 .countyOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getCountyOfBirth())
                                                 .placeOfBirth(cmd.getDocumentTemplate().getBirthCertificate().getPlaceOfBirth())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getBirthCertificate()
-                                                                .getTimeOfIssue().getSeconds())))
+                                                                .getTimeOfIssue()))
                                                 .build()
                                 )
                                 .deathCertificate(DeathCertificate.newBuilder()
@@ -447,9 +446,9 @@ public class DocumentService {
                                         .number(cmd.getDocumentTemplate().getDeathCertificate().getNumber())
                                         .countyOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getCountyOfDeath())
                                         .placeOfDeath(cmd.getDocumentTemplate().getDeathCertificate().getPlaceOfDeath())
-                                        .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                        .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                 cmd.getDocumentTemplate().getBirthCertificate()
-                                                        .getTimeOfIssue().getSeconds())))
+                                                        .getTimeOfIssue()))
                                         .build()
                                 )
                                 .passport(Passport.newBuilder()
@@ -464,9 +463,9 @@ public class DocumentService {
                                         .fathersIprsId(cmd.getDocumentTemplate().getPassport().getFathersIprsId())
                                         .countyOfBirth(cmd.getDocumentTemplate().getPassport().getCountyOfBirth())
                                         .placeOfBirth(cmd.getDocumentTemplate().getPassport().getPlaceOfBirth())
-                                        .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                        .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                 cmd.getDocumentTemplate().getPassport()
-                                                        .getTimeOfIssue().getSeconds())))
+                                                        .getTimeOfIssue()))
                                         .placeOfIssue(cmd.getDocumentTemplate().getPassport().getPlaceOfIssue())
                                         .build()
                                 )
@@ -483,9 +482,9 @@ public class DocumentService {
                                                 .fathersIprsId(cmd.getDocumentTemplate().getIdCard().getFathersIprsId())
                                                 .countyOfBirth(cmd.getDocumentTemplate().getIdCard().getCountyOfBirth())
                                                 .placeOfBirth(cmd.getDocumentTemplate().getIdCard().getPlaceOfBirth())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getIdCard()
-                                                                .getTimeOfIssue().getSeconds())))
+                                                                .getTimeOfIssue()))
                                                 .placeOfIssue(cmd.getDocumentTemplate().getIdCard().getPlaceOfIssue())
                                                 .build()
                                 )
@@ -494,12 +493,12 @@ public class DocumentService {
                                                 .id(cmd.getDocumentTemplate().getInterstatePass().getId())
                                                 .personId(cmd.getDocumentTemplate().getInterstatePass().getPersonId())
                                                 .fullName(cmd.getDocumentTemplate().getInterstatePass().getFullName())
-                                                .timeOfIssue(String.valueOf(Instant.ofEpochSecond(
+                                                .timeOfIssue(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getInterstatePass()
-                                                                .getTimeOfIssue().getSeconds())))
-                                                .validTill(String.valueOf(Instant.ofEpochSecond(
+                                                                .getTimeOfIssue()))
+                                                .validTill(DateConverter.ProtoDateToString.INSTANCE.convert(
                                                         cmd.getDocumentTemplate().getInterstatePass()
-                                                                .getValidTill().getSeconds())))
+                                                                .getValidTill()))
                                                 .build()
                                 )
                                 .build()

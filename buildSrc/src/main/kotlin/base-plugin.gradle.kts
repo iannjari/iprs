@@ -46,6 +46,10 @@ dependencies {
     // kafka
     implementation("org.springframework.kafka:spring-kafka")
 //    implementation("io.confluent:kafka-protobuf-serializer")
+
+    // mapstruct
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+
 }
 
 jib {
