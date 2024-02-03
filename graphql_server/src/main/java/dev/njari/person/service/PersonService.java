@@ -2,6 +2,7 @@ package dev.njari.person.service;
 
 import com.netflix.dgs.codegen.generated.types.*;
 import dev.njari.person.grpc.PersonGrpcClient;
+import dev.njari.util.DateConverter;
 import iprs.document.v1.DocumentType;
 import iprs.migration.v1.Movement;
 import iprs.migration.v1.MovementType;
@@ -90,8 +91,10 @@ public class PersonService {
             return RegisterBirthCmd.newBuilder()
                 .setTemplate(iprs.person.v1.Person.newBuilder()
                         .setIsAlive(request.getTemplate().getIsAlive())
-//                        .setDateOfDeath()
-//                        .setDateOfBirth(request.getTemplate().getI)
+                        .setDateOfDeath(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                request.getTemplate().getDateOfDeath()))
+                        .setDateOfBirth(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                request.getTemplate().getDateOfBirth()))
                         .setFirstName(request.getTemplate().getFirstName())
                         .setLastName(request.getTemplate().getLastName())
                         .setOtherNames(request.getTemplate().getOtherNames())
@@ -109,15 +112,18 @@ public class PersonService {
             return UpdatePersonDetailsCmd.newBuilder()
                 .setTemplate(iprs.person.v1.Person.newBuilder()
                         .setIsAlive(request.getTemplate().getIsAlive())
-//                        .setDateOfDeath()
-//                        .setDateOfBirth(request.getTemplate().getI)
+                        .setDateOfDeath(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                request.getTemplate().getDateOfDeath()))
+                        .setDateOfBirth(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                request.getTemplate().getDateOfBirth()))
                         .setIprsDetails(
                                 iprs.person.v1.IprsDetails.newBuilder()
                                         .setBirthCertificateNumber(request.getTemplate().getIprsDetails().getBirthCertificateNumber())
                                         .setWorkPermitNumber(request.getTemplate().getIprsDetails().getWorkPermitNumber())
                                         .setNationalIdNumber(request.getTemplate().getIprsDetails().getNationalIdNumber())
                                         .setPassportNumber(request.getTemplate().getIprsDetails().getPassportNumber())
-//                                        .setDateOfRegistration(request.getTemplate().getIprsDetails().getDateOfRegistration())
+                                        .setDateOfRegistration(DateConverter.StringToProtoDate.INSTANCE.convert(
+                                                request.getTemplate().getIprsDetails().getDateOfRegistration()))
                                         .setResidencyPermitNumber(request.getTemplate().getIprsDetails().getResidencyPermitNumber())
                                         .build()
                         )
@@ -136,15 +142,16 @@ public class PersonService {
 
             return RegisterBirthResponse.newBuilder()
                     .person(Person.newBuilder()
-                        .dateOfBirth(Instant.ofEpochSecond(cmd.getTemplate().getDateOfBirth().getSeconds()).toString())
-                        .dateOfDeath(Instant.ofEpochSecond(cmd.getTemplate().getDateOfDeath().getSeconds()).toString())
+                        .dateOfBirth(DateConverter.ProtoDateToString.INSTANCE.convert(cmd.getTemplate().getDateOfBirth()))
+                        .dateOfDeath(DateConverter.ProtoDateToString.INSTANCE.convert(cmd.getTemplate().getDateOfDeath()))
                         .firstName(cmd.getTemplate().getFirstName())
                         .iprsDetails(IprsDetails.newBuilder()
                                 .birthCertificateNumber(cmd.getTemplate().getIprsDetails().getBirthCertificateNumber())
                                 .workPermitNumber(cmd.getTemplate().getIprsDetails().getWorkPermitNumber())
                                 .nationalIdNumber(cmd.getTemplate().getIprsDetails().getNationalIdNumber())
                                 .passportNumber(cmd.getTemplate().getIprsDetails().getPassportNumber())
-                                .dateOfRegistration(String.valueOf(Instant.ofEpochSecond(cmd.getTemplate().getIprsDetails().getDateOfRegistration().getSeconds())))
+                                .dateOfRegistration(DateConverter.ProtoDateToString.INSTANCE.convert(
+                                        cmd.getTemplate().getIprsDetails().getDateOfRegistration()))
                                 .residencyPermitNumber(cmd.getTemplate().getIprsDetails().getResidencyPermitNumber())
                                 .build())
                         .id(cmd.getTemplate().getId())
@@ -166,15 +173,16 @@ public class PersonService {
             return UpdatePersonDetailsResponse.newBuilder()
             .template(
                     Person.newBuilder()
-                    .dateOfBirth(Instant.ofEpochSecond(cmd.getTemplate().getDateOfBirth().getSeconds()).toString())
-                    .dateOfDeath(Instant.ofEpochSecond(cmd.getTemplate().getDateOfDeath().getSeconds()).toString())
+                    .dateOfBirth(DateConverter.ProtoDateToString.INSTANCE.convert(cmd.getTemplate().getDateOfBirth()))
+                    .dateOfDeath(DateConverter.ProtoDateToString.INSTANCE.convert(cmd.getTemplate().getDateOfDeath()))
                     .firstName(cmd.getTemplate().getFirstName())
                     .iprsDetails(IprsDetails.newBuilder()
                             .birthCertificateNumber(cmd.getTemplate().getIprsDetails().getBirthCertificateNumber())
                             .workPermitNumber(cmd.getTemplate().getIprsDetails().getWorkPermitNumber())
                             .nationalIdNumber(cmd.getTemplate().getIprsDetails().getNationalIdNumber())
                             .passportNumber(cmd.getTemplate().getIprsDetails().getPassportNumber())
-                            .dateOfRegistration(String.valueOf(Instant.ofEpochSecond(cmd.getTemplate().getIprsDetails().getDateOfRegistration().getSeconds())))
+                            .dateOfRegistration(DateConverter.ProtoDateToString.INSTANCE.convert(
+                                    cmd.getTemplate().getIprsDetails().getDateOfRegistration()))
                             .residencyPermitNumber(cmd.getTemplate().getIprsDetails().getResidencyPermitNumber())
                             .build())
                     .id(cmd.getTemplate().getId())
