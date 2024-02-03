@@ -2,19 +2,13 @@ package dev.njari.migration.service;
 
 import com.netflix.dgs.codegen.generated.types.*;
 import dev.njari.migration.grpc.MigrationGrpcClient;
-import iprs.document.v1.AmendDocumentCmd;
-import iprs.document.v1.ApplyDocumentCmd;
 import iprs.document.v1.DocumentType;
-import iprs.document.v1.IssueDocumentCmd;
 import iprs.migration.v1.Movement;
 import iprs.migration.v1.MovementType;
 import iprs.migration.v1.RecordMovementCmd;
 import iprs.migration.v1.UpdateMovementCmd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.Objects;
 
 /**
  * @author njari_mathenge
