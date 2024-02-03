@@ -10,8 +10,9 @@ import iprs.document.v1.IssueDocumentCmd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Objects;
+
+import static com.netflix.dgs.codegen.generated.types.DocumentType.*;
 
 /**
  * @author njari_mathenge
@@ -88,6 +89,93 @@ public class DocumentService {
      */
     private void validate(ApplyDocumentRequest request) {
 
+        if (Objects.isNull(request.getDocumentTemplate().getType())) throw new RuntimeException("Document type must be specified!");
+        if (request.getDocumentTemplate().getType().equals(BIRTH_CERTIFICATE)) {
+            if (Objects.isNull(request.getDocumentTemplate().getBirthCertificate())) throw new RuntimeException("Birth Certificate template cannot be null if document type is specified as such!");
+            var bCert = request.getDocumentTemplate().getBirthCertificate();
+            if (Objects.isNull(bCert.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(bCert.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(bCert.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(bCert.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(bCert.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(bCert.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(bCert.getPersonId())) throw new RuntimeException("Child's IPRS id must be provided");
+            if (Objects.isNull(bCert.getBirthRegistrationNumber())) throw new RuntimeException("Child's birth registration number must be provided");
+            if (bCert.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (bCert.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (bCert.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (bCert.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (bCert.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (bCert.getPersonId().isBlank()) throw new RuntimeException("Child's IPRS id must be provided");
+            if (bCert.getBirthRegistrationNumber().equals(0)) throw new RuntimeException("Child's birth registration number must be provided");
+            if (bCert.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(PASSPORT)) {
+            if (Objects.isNull(request.getDocumentTemplate().getPassport())) throw new RuntimeException("Passport template cannot be null if document type is specified as such!");
+            var pP = request.getDocumentTemplate().getPassport();
+            if (Objects.isNull(pP.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(pP.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(pP.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(pP.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(pP.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(pP.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(pP.getPersonId())) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (Objects.isNull(pP.getBirthCertificateNumber())) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (pP.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (pP.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (pP.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (pP.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (pP.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (pP.getPersonId().isBlank()) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (pP.getBirthCertificateNumber().isBlank()) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (pP.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(DEATH_CERTIFICATE)) {
+            if (Objects.isNull(request.getDocumentTemplate().getDeathCertificate())) throw new RuntimeException("Death Certificate template cannot be null if document type is specified as such!");
+            var dCert = request.getDocumentTemplate().getDeathCertificate();
+            if (Objects.isNull(dCert.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(dCert.getCountyOfDeath())) throw new RuntimeException("County of death must be provided!");
+            if (Objects.isNull(dCert.getPlaceOfDeath())) throw new RuntimeException("Place of death must be provided!");
+            if (Objects.isNull(dCert.getPersonId())) throw new RuntimeException("IPRS id must be provided");
+            if (dCert.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (dCert.getCountyOfDeath().isBlank()) throw new RuntimeException("County of death must be provided!");
+            if (dCert.getPersonId().isBlank()) throw new RuntimeException("IPRS id must be provided");
+            if (dCert.getPlaceOfDeath().isBlank()) throw new RuntimeException("Place of death must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(INTERSTATE_PASS)) {
+            if (Objects.isNull(request.getDocumentTemplate().getInterstatePass())) throw new RuntimeException("Interstate pass template cannot be null if document type is specified as such!");
+            var pass = request.getDocumentTemplate().getInterstatePass();
+            if (Objects.isNull(pass.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(pass.getBirthRegistrationNumber())) throw new RuntimeException("County of death must be provided!");
+            if (Objects.isNull(pass.getPersonId())) throw new RuntimeException("IPRS id must be provided");
+            if (pass.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (pass.getBirthRegistrationNumber().equals(0)) throw new RuntimeException("County of birth must be provided!");
+            if (pass.getPersonId().isBlank()) throw new RuntimeException("IPRS id must be provided");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(NATIONAL_ID)) {
+            if (Objects.isNull(request.getDocumentTemplate().getIdCard())) throw new RuntimeException("Id card template cannot be null if document type is specified as such!");
+            var id = request.getDocumentTemplate().getPassport();
+            if (Objects.isNull(id.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(id.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(id.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(id.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(id.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(id.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(id.getPersonId())) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (Objects.isNull(id.getBirthCertificateNumber())) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (id.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (id.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (id.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (id.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (id.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (id.getPersonId().isBlank()) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (id.getBirthCertificateNumber().isBlank()) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (id.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+        }
     }
 
     /**
@@ -96,6 +184,103 @@ public class DocumentService {
      */
     private void validate(AmendDocumentRequest request) {
 
+        if (Objects.isNull(request.getDocumentTemplate().getType())) throw new RuntimeException("Document type must be specified!");
+        if (request.getDocumentTemplate().getType().equals(BIRTH_CERTIFICATE)) {
+            if (Objects.isNull(request.getDocumentTemplate().getBirthCertificate())) throw new RuntimeException("Birth Certificate template cannot be null if document type is specified as such!");
+            var bCert = request.getDocumentTemplate().getBirthCertificate();
+            if (Objects.isNull(bCert.getId())) throw new RuntimeException("Id must be provided!");
+            if (Objects.isNull(bCert.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(bCert.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(bCert.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(bCert.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(bCert.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(bCert.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(bCert.getPersonId())) throw new RuntimeException("Child's IPRS id must be provided");
+            if (Objects.isNull(bCert.getBirthRegistrationNumber())) throw new RuntimeException("Child's birth registration number must be provided");
+            if (bCert.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (bCert.getId().isBlank()) throw new RuntimeException("Id must be provided!");
+            if (bCert.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (bCert.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (bCert.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (bCert.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (bCert.getPersonId().isBlank()) throw new RuntimeException("Child's IPRS id must be provided");
+            if (bCert.getBirthRegistrationNumber().equals(0)) throw new RuntimeException("Child's birth registration number must be provided");
+            if (bCert.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(PASSPORT)) {
+            if (Objects.isNull(request.getDocumentTemplate().getPassport())) throw new RuntimeException("Passport template cannot be null if document type is specified as such!");
+            var pP = request.getDocumentTemplate().getPassport();
+            if (Objects.isNull(pP.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(pP.getId())) throw new RuntimeException("Id must be provided!");
+            if (Objects.isNull(pP.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(pP.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(pP.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(pP.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(pP.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(pP.getPersonId())) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (Objects.isNull(pP.getBirthCertificateNumber())) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (pP.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (pP.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (pP.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (pP.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (pP.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (pP.getPersonId().isBlank()) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (pP.getBirthCertificateNumber().isBlank()) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (pP.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (pP.getId().isBlank()) throw new RuntimeException("Id must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(DEATH_CERTIFICATE)) {
+            if (Objects.isNull(request.getDocumentTemplate().getDeathCertificate())) throw new RuntimeException("Death Certificate template cannot be null if document type is specified as such!");
+            var dCert = request.getDocumentTemplate().getDeathCertificate();
+            if (Objects.isNull(dCert.getId())) throw new RuntimeException("Id must be provided!");
+            if (Objects.isNull(dCert.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(dCert.getCountyOfDeath())) throw new RuntimeException("County of death must be provided!");
+            if (Objects.isNull(dCert.getPlaceOfDeath())) throw new RuntimeException("Place of death must be provided!");
+            if (Objects.isNull(dCert.getPersonId())) throw new RuntimeException("IPRS id must be provided");
+            if (dCert.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (dCert.getCountyOfDeath().isBlank()) throw new RuntimeException("County of death must be provided!");
+            if (dCert.getPersonId().isBlank()) throw new RuntimeException("IPRS id must be provided");
+            if (dCert.getPlaceOfDeath().isBlank()) throw new RuntimeException("Place of death must be provided!");
+            if (dCert.getId().isBlank()) throw new RuntimeException("Id must be provided!");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(INTERSTATE_PASS)) {
+            if (Objects.isNull(request.getDocumentTemplate().getInterstatePass())) throw new RuntimeException("Interstate pass template cannot be null if document type is specified as such!");
+            var pass = request.getDocumentTemplate().getInterstatePass();
+            if (Objects.isNull(pass.getId())) throw new RuntimeException("Id must be provided!");
+            if (Objects.isNull(pass.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(pass.getBirthRegistrationNumber())) throw new RuntimeException("County of death must be provided!");
+            if (Objects.isNull(pass.getPersonId())) throw new RuntimeException("IPRS id must be provided");
+            if (pass.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (pass.getBirthRegistrationNumber().equals(0)) throw new RuntimeException("County of birth must be provided!");
+            if (pass.getId().isBlank()) throw new RuntimeException("Id must be provided!");
+            if (pass.getPersonId().isBlank()) throw new RuntimeException("IPRS id must be provided");
+        }
+
+        if (request.getDocumentTemplate().getType().equals(NATIONAL_ID)) {
+            if (Objects.isNull(request.getDocumentTemplate().getIdCard())) throw new RuntimeException("Id card template cannot be null if document type is specified as such!");
+            var id = request.getDocumentTemplate().getPassport();
+            if (Objects.isNull(id.getId())) throw new RuntimeException("Id must be provided!");
+            if (Objects.isNull(id.getFullName())) throw new RuntimeException("Full name must be provided!");
+            if (Objects.isNull(id.getCountyOfBirth())) throw new RuntimeException("County of birth must be provided!");
+            if (Objects.isNull(id.getFathersFullName())) throw new RuntimeException("Father's name can be blank but not null!");
+            if (Objects.isNull(id.getMothersFullName())) throw new RuntimeException("Mother's full name must be provided!");
+            if (Objects.isNull(id.getFathersIprsId())) throw new RuntimeException("Father's IPRS ID can be blank but not null!");
+            if (Objects.isNull(id.getMothersIprsId())) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (Objects.isNull(id.getPersonId())) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (Objects.isNull(id.getBirthCertificateNumber())) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (id.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+            if (id.getFullName().isBlank()) throw new RuntimeException("Full name must be provided!");
+            if (id.getCountyOfBirth().isBlank()) throw new RuntimeException("County of birth must be provided!");
+            if (id.getMothersFullName().isBlank()) throw new RuntimeException("Mother's full name must be provided!");
+            if (id.getMothersIprsId().isBlank()) throw new RuntimeException("Mother's IPRS ID must be provided!");
+            if (id.getPersonId().isBlank()) throw new RuntimeException("Applicant's IPRS id must be provided");
+            if (id.getBirthCertificateNumber().isBlank()) throw new RuntimeException("Applicant's birth cert number must be provided");
+            if (id.getId().isBlank()) throw new RuntimeException("Id must be provided!");
+            if (id.getPlaceOfBirth().isBlank()) throw new RuntimeException("Place of birth must be provided!");
+        }
     }
 
 
