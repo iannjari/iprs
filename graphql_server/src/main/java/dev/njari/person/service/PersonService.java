@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * @author njari_mathenge
@@ -70,7 +71,13 @@ public class PersonService {
      * @param request - RegisterBirthRequest
      */
     private void validate(RegisterBirthRequest request) {
-
+        if (Objects.isNull(request.getTemplate().getFirstName())) throw new RuntimeException("First name must be provided!");
+        if (Objects.isNull(request.getTemplate().getOtherNames())) throw new RuntimeException("Other names can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getLastName())) throw new RuntimeException("Last name can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getIsAlive())) throw new RuntimeException("Alive/dead is required!");
+        if (Objects.isNull(request.getTemplate().getDateOfBirth())) throw new RuntimeException("DoB must be provided!!");
+        if (request.getTemplate().getFirstName().isBlank()) throw new RuntimeException("First name must be provided!");
+        if (request.getTemplate().getDateOfBirth().isBlank()) throw new RuntimeException("DoB must be provided!");
     }
 
     /**
@@ -78,7 +85,15 @@ public class PersonService {
      * @param request - UpdatePersonDetailsRequest
      */
     private void validate(UpdatePersonDetailsRequest request) {
-
+        if (Objects.isNull(request.getTemplate().getFirstName())) throw new RuntimeException("First name must be provided!");
+        if (Objects.isNull(request.getTemplate().getId())) throw new RuntimeException("Id must be provided!");
+        if (Objects.isNull(request.getTemplate().getOtherNames())) throw new RuntimeException("Other names can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getLastName())) throw new RuntimeException("Last name can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getIsAlive())) throw new RuntimeException("Alive/dead is required!");
+        if (Objects.isNull(request.getTemplate().getDateOfBirth())) throw new RuntimeException("DoB must be provided!!");
+        if (request.getTemplate().getId().isBlank()) throw new RuntimeException("Id must be provided!");
+        if (request.getTemplate().getFirstName().isBlank()) throw new RuntimeException("First name must be provided!");
+        if (request.getTemplate().getDateOfBirth().isBlank()) throw new RuntimeException("DoB must be provided!");
     }
 
     /**
