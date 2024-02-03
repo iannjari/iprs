@@ -4,6 +4,7 @@ metadata:
   name: iprs-svc
   labels:
     app: iprs-svc
+  namespace: applications
 spec:
   replicas: 1
   selector:
@@ -36,13 +37,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: iprs-np
+  name: iprs-service
 spec:
   selector:
     app: iprs-svc
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 9191
     targetPort: 9090
     protocol: TCP
-    nodePort: 31000
