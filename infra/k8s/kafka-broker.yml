@@ -1,21 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kafka
+  name: kafka-broker
   labels:
-    app: kafka
+    app: kafka-broker
+  namespace: kafka
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kafka
+      app: kafka-broker
   template:
     metadata:
       labels:
-        app: kafka
+        app: kafka-broker
     spec:
       containers:
-                - name: kafka
+                - name: kafka-broker
                   image: bitnami/kafka:latest
                   imagePullPolicy: IfNotPresent
                   ports:
@@ -35,10 +36,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka-service
+  name: kafka-broker-service
 spec:
   selector:
-    app: kafka
+    app: kafka-broker
   type: ClusterIP
   ports:
     - port: 9092
