@@ -10,6 +10,8 @@ import iprs.migration.v1.UpdateMovementCmd;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * @author njari_mathenge
  * on 31/01/2024.
@@ -65,7 +67,15 @@ public class MigrationService {
      * @param request - RecordMovementRequest
      */
     private void validate(RecordMovementRequest request) {
-
+        if (Objects.isNull(request.getTemplate().getType())) throw new RuntimeException("Type must be provided!");
+        if (Objects.isNull(request.getTemplate().getCountry())) throw new RuntimeException("Country must be provided!");
+        if (Objects.isNull(request.getTemplate().getDocumentId())) throw new RuntimeException("Document id cannot be null!");
+        if (Objects.isNull(request.getTemplate().getDocumentUsed())) throw new RuntimeException("Document used cannot be null!");
+        if (Objects.isNull(request.getTemplate().getIprsSvcId())) throw new RuntimeException("IPRS ID can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getPortOfEntryOrExit())) throw new RuntimeException("PoEoE must be provided!");
+        if (request.getTemplate().getCountry().isBlank()) throw new RuntimeException("Country must be provided!");
+        if (request.getTemplate().getPortOfEntryOrExit().isBlank()) throw new RuntimeException("PoEoE must be provided!");
+        if (request.getTemplate().getIprsSvcId().isBlank()) throw new RuntimeException("IPRS ID must be provided!");
     }
 
     /**
@@ -73,7 +83,17 @@ public class MigrationService {
      * @param request - UpdateMovementRequest
      */
     private void validate(UpdateMovementRequest request) {
-
+        if (Objects.isNull(request.getTemplate().getType())) throw new RuntimeException("Type must be provided!");
+        if (Objects.isNull(request.getTemplate().getCountry())) throw new RuntimeException("Country must be provided!");
+        if (Objects.isNull(request.getTemplate().getDocumentId())) throw new RuntimeException("Document id cannot be null!");
+        if (Objects.isNull(request.getTemplate().getDocumentUsed())) throw new RuntimeException("Document used cannot be null!");
+        if (Objects.isNull(request.getTemplate().getIprsSvcId())) throw new RuntimeException("IPRS ID can be blank but not null!");
+        if (Objects.isNull(request.getTemplate().getPortOfEntryOrExit())) throw new RuntimeException("PoEoE must be provided!");
+        if (Objects.isNull(request.getTemplate().getId())) throw new RuntimeException("IPRS ID must be provided");
+        if (request.getTemplate().getCountry().isBlank()) throw new RuntimeException("Country must be provided!");
+        if (request.getTemplate().getPortOfEntryOrExit().isBlank()) throw new RuntimeException("PoEoE must be provided!");
+        if (request.getTemplate().getId().isBlank()) throw new RuntimeException("Id must be provided!");
+        if (request.getTemplate().getIprsSvcId().isBlank()) throw new RuntimeException("IPRS ID must be provided!");
     }
 
     /**
