@@ -1,8 +1,10 @@
 plugins {
     `java-library`
+    jacoco
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     id("com.google.cloud.tools.jib")
+    id("org.sonarqube")
 }
 
 repositories {
@@ -10,6 +12,7 @@ repositories {
 }
 
 extra["netDevhVersion"] = "2.14.0.RELEASE"
+var jacocoToolVersion = "0.8.11"
 
 dependencies {
     // lombok
@@ -50,6 +53,14 @@ dependencies {
     // mapstruct
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
+    // testing
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.mockito:mockito-junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testCompileOnly("org.junit.jupiter:junit-jupiter-api")
+    testCompileOnly("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
 }
 
 jib {
@@ -57,4 +68,30 @@ jib {
 //        image = ""
 //    }
     to.image = project.name
+}
+
+jacoco {
+    toolVersion = jacocoToolVersion
+    reportsDirectory.set(layout.buildDirectory.dir("reports/jacoco"))
+}
+
+task<TestReport>("testReport") {
+    destinationDir = file("$buildDir/reports/tests")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+    dependsOn(tasks.test)
+}
+
+tasks.sonarqube {
+    dependsOn(tasks.jacocoTestReport)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
