@@ -31,3 +31,13 @@ dependencies {
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-micrometer")
 }
+
+sonarqube {
+    properties {
+        property("sonar.projectName", "GraphQL Server")
+        property("sonar.projectKey", "graphql_server")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.organization", "iannjari")
+//        property("sonar.token", "")
+    }
+}
