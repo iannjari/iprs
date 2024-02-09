@@ -21,6 +21,7 @@ My interpretation of Kenya's Integrated Population Registration System using Spr
 - Postman - recent version that can handle gRPC server reflection and GraphQL introspection
 - MongoDB running natively or on a virtualisation platform like Docker
 - Docker
+- minikube - if running this in a Kubernetes cluster is desired
 
 
 ### docker
@@ -32,3 +33,14 @@ then:
 ```
 docker run app_name
 ```
+
+### kubernetes
+to run locally, you need minikube, or docker's kubernetes env set up
+
+- apply the manifests in `infra/k8s` to set up shared components in the cluster
+- build docker images for desired apps using the gradle jib task on each
+```
+/gradlew app_name:jibDockerBuild
+```
+- with images in your env (for minikube, load images from your docker env using `minikube image load image_name`), apply 
+ the application manifest located in `app_module/k8s/`
