@@ -5,8 +5,13 @@ My interpretation of Kenya's Integrated Population Registration System using Spr
 
 ``` 
 - .
-- buildSrc/ - contains kotlin DSL scripts for shared dependencies
+- .github/ - github actions scripts
+- docker/ - doker compose files...
+- infra/ - common infra like shared k8s components 
+- common_utils/ - common utilities shared across applications e.g grpc, kafka configs, custom protobuf repository interface
+- buildSrc/ - kotlin DSL scripts for shared dependencies
 - iprs_svc/ - main server - exposed via gRPC - holding logic (workflows ochestrated using Temporal - WIP)
+- graphql_server/ - server that is a backend-for-frontends proxy to servers
 - protobuf/ - contains the protocal buffer definitions of the data and rpc services
 ```
 
@@ -19,7 +24,7 @@ My interpretation of Kenya's Integrated Population Registration System using Spr
 
 
 ### docker
-build an image using:
+build an image of desired app using:
 ```
 /gradlew app_name:jibDockerBuild
 ```
