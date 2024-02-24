@@ -5,7 +5,7 @@ server:
 
 grpc:
   server:
-    port: 9090
+    port: 9191
 
 spring:
   application:
@@ -14,3 +14,10 @@ spring:
     mongodb:
       database: ${spring.application.name}
       uri: ${MONGO_URL:mongodb://localhost:27017}
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: '*'
