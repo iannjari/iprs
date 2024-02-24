@@ -5,7 +5,7 @@ My interpretation of Kenya's Integrated Population Registration System using Spr
 
 ``` 
 - .
-- .github/ - github actions scripts
+- .github/ - github actions scripts 
 - docker/ - doker compose files for importatnt infra, monitoring e.t.c
 - infra/ - common infra like shared k8s components 
 - common_utils/ - common utilities shared across applications e.g grpc, kafka configs, custom protobuf repository interface
