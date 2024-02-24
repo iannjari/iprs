@@ -33,11 +33,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-autoconfigure")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-
-    // micrometer, prometheus
-    implementation("io.micrometer:micrometer-registry-prometheus")
-
 
 
     // proto
