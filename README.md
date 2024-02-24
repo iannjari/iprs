@@ -1,12 +1,12 @@
 # About
-My interpretation of Kenya's Integrated Population Registration System using Spring Boot, Temporal (WIP) and MongoDB - exposed using a gRPC and GraphQL interface.
+My interpretation of Kenya's Integrated Population Registration System using Spring Boot, Temporal (WIP) and MongoDB - exposed using a gRPC and GraphQL(WIP) interface.
 
 ## Project Structure
 
 ``` 
 - .
 - .github/ - github actions scripts
-- docker/ - doker compose files for importatnt infra, monitoring e.t.c
+- docker/ - doker compose files...
 - infra/ - common infra like shared k8s components 
 - common_utils/ - common utilities shared across applications e.g grpc, kafka configs, custom protobuf repository interface
 - buildSrc/ - kotlin DSL scripts for shared dependencies
