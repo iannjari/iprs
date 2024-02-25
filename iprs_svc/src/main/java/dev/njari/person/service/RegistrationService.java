@@ -1,6 +1,7 @@
 package dev.njari.person.service;
 
 import com.google.protobuf.Timestamp;
+import dev.njari.common_utils.exception.custom_exception.NotFoundException;
 import dev.njari.person.repository.PersonRepository;
 import iprs.person.v1.*;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class RegistrationService {
         // update and save
         Person person = personRepository.findById(cmd.getPersonId());
 
-        if (Objects.isNull(person)) throw new RuntimeException("Person with id: "
+        if (Objects.isNull(person)) throw new NotFoundException("Person with id: "
                 .concat(cmd.getPersonId()).concat(" not found"));
 
         person = personRepository.save(person.toBuilder().setDateOfDeath(cmd.getTimeOfDeath()).setIsAlive(false).build());
@@ -86,7 +87,7 @@ public class RegistrationService {
     }
 
     private void validate(RecordDeathCmd cmd) {
-        if (cmd.hasTimeOfDeath()) throw new IllegalArgumentException("Command must have Date of death!");
+        if (!cmd.hasTimeOfDeath()) throw new IllegalArgumentException("Command must have Date of death!");
         if (cmd.getPersonId().isBlank()) throw new IllegalArgumentException("Person id cannot be null");
     }
 }
