@@ -1,6 +1,7 @@
 package dev.njari.person.service;
 
 import com.google.protobuf.Timestamp;
+import dev.njari.common_utils.exception.custom_exception.InvalidArgumentException;
 import dev.njari.common_utils.exception.custom_exception.NotFoundException;
 import dev.njari.person.repository.PersonRepository;
 import iprs.person.v1.*;
@@ -69,25 +70,22 @@ public class RegistrationService {
     }
 
     private void validate(RegisterBirthCmd cmd) {
-        if (!cmd.hasTemplate()) throw new IllegalArgumentException("Command must have template!");
+        if (!cmd.hasTemplate()) throw new InvalidArgumentException("Command must have template!");
         if (cmd.getTemplate().getFirstName().isBlank() &&
-                cmd.getTemplate().getFirstName().isBlank()) throw new IllegalArgumentException ("Must have first or last name!");
-        if (!cmd.getTemplate().hasDateOfBirth()) throw new IllegalArgumentException("Command must have DoB!");
-        if (cmd.getTemplate().hasIprsDetails()) throw new IllegalArgumentException("Command cannot have Iprs Details!");
+                cmd.getTemplate().getFirstName().isBlank()) throw new InvalidArgumentException ("Must have first or last name!");
+        if (!cmd.getTemplate().hasDateOfBirth()) throw new InvalidArgumentException("Command must have DoB!");
+        if (cmd.getTemplate().hasIprsDetails()) throw new InvalidArgumentException("Command cannot have Iprs Details!");
     }
 
     private void validate(UpdatePersonDetailsCmd cmd) {
-        if (!cmd.hasTemplate()) throw new IllegalArgumentException("Command must have template!");
+        if (!cmd.hasTemplate()) throw new InvalidArgumentException("Command must have template!");
         if (cmd.getTemplate().getFirstName().isBlank() &&
-                cmd.getTemplate().getFirstName().isBlank()) throw new IllegalArgumentException ("Must have first or last name!");
-        if (!cmd.getTemplate().hasDateOfBirth()) throw new IllegalArgumentException("Command must have DoB!");
-        if (!cmd.getTemplate().hasIprsDetails()) throw new IllegalArgumentException("Command must have Iprs Details!");
-        if (!cmd.getTemplate().getId().isBlank()) throw new IllegalArgumentException("Id cannot be null");
-
+                cmd.getTemplate().getFirstName().isBlank()) throw new InvalidArgumentException ("Must have first or last name!");
+        if (!cmd.getTemplate().hasDateOfBirth()) throw new InvalidArgumentException("Command must have DoB!");
     }
 
     private void validate(RecordDeathCmd cmd) {
-        if (!cmd.hasTimeOfDeath()) throw new IllegalArgumentException("Command must have Date of death!");
-        if (cmd.getPersonId().isBlank()) throw new IllegalArgumentException("Person id cannot be null");
+        if (!cmd.hasTimeOfDeath()) throw new InvalidArgumentException("Command must have Date of death!");
+        if (cmd.getPersonId().isBlank()) throw new InvalidArgumentException("Person id cannot be null");
     }
 }
