@@ -10,6 +10,14 @@ grpc:
 spring:
   application:
     name: iprs-app
+  # Temporal configurations
+  temporal:
+    connection:
+      target: localhost:7233
+    workers-auto-discovery:
+      packages: dev.njari
+    start-workers: true
+    namespace: default
   data:
     mongodb:
       database: ${spring.application.name}
@@ -21,3 +29,5 @@ management:
       base-path: /management
       exposure:
         include: '*'
+
+

@@ -12,6 +12,10 @@ dependencies {
     implementation (project(":protobuf"))
     // common-utils
     implementation(project(":common_utils"))
+
+    implementation("io.temporal:temporal-sdk")
+    implementation("io.temporal:temporal-spring-boot-starter-alpha")
+
 }
 
 sonarqube {

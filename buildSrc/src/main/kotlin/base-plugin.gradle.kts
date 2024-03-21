@@ -13,6 +13,7 @@ repositories {
 
 extra["netDevhVersion"] = "2.14.0.RELEASE"
 var jacocoToolVersion = "0.8.11"
+var temporalVersion = "1.17.0"
 
 dependencies {
     // lombok
@@ -65,6 +66,11 @@ dependencies {
     testCompileOnly("org.junit.jupiter:junit-jupiter-api")
     testCompileOnly("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+
+    implementation("io.temporal:temporal-sdk:${temporalVersion}")
+    implementation("io.temporal:temporal-spring-boot-starter-alpha:${temporalVersion}")
+    implementation("io.temporal:temporal-testing:${temporalVersion}")
 
 }
 

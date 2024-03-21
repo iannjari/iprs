@@ -82,6 +82,8 @@ public class RegistrationService {
         if (cmd.getTemplate().getFirstName().isBlank() &&
                 cmd.getTemplate().getFirstName().isBlank()) throw new InvalidArgumentException ("Must have first or last name!");
         if (!cmd.getTemplate().hasDateOfBirth()) throw new InvalidArgumentException("Command must have DoB!");
+        if (cmd.getTemplate().getId().isBlank()) throw new InvalidArgumentException("Request must have id of person to update!");
+        if (cmd.getTemplate().hasIprsDetails()) throw new InvalidArgumentException("Request must have IPRS details of person to update!");
     }
 
     private void validate(RecordDeathCmd cmd) {
